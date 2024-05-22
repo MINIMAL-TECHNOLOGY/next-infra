@@ -59,8 +59,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NetworkHelper = void 0;
-var helpers_1 = require("@/helpers");
-var utilities_1 = require("@/utilities");
+var helpers_1 = require("../helpers");
+var utilities_1 = require("../utilities");
 var HTTP = 'http';
 var HTTPS = 'https';
 // -------------------------------------------------------------

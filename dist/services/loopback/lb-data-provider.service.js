@@ -83,10 +83,10 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LBDataProviderService = void 0;
-var common_1 = require("@/common");
-var utilities_1 = require("@/utilities");
-var lodash_utility_1 = require("@/utilities/lodash.utility");
-var services_1 = require("@/services");
+var common_1 = require("../../common");
+var utilities_1 = require("../../utilities");
+var lodash_utility_1 = require("../../utilities/lodash.utility");
+var services_1 = require("../../services");
 var tsyringe_1 = require("tsyringe");
 var LBDataProviderService = /** @class */ (function (_super) {
     __extends(LBDataProviderService, _super);
