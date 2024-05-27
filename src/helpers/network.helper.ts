@@ -1,6 +1,7 @@
 import type { TAnyObject, TRequestMethod } from '@/common';
 import { LoggerFactory, type ApplicationLogger } from '@/helpers';
 import { stringify } from '@/utilities';
+import { injectable } from 'tsyringe';
 
 const HTTP = 'http';
 const HTTPS = 'https';
@@ -14,6 +15,7 @@ interface IRequestOptions {
 }
 
 // -------------------------------------------------------------
+@injectable()
 export class NetworkHelper {
   private readonly name: string;
   protected logger: ApplicationLogger;

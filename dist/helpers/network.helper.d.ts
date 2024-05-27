@@ -1,5 +1,5 @@
-import type { TAnyObject, TRequestMethod } from '../common';
-import { type ApplicationLogger } from '../helpers';
+import type { TAnyObject, TRequestMethod } from '@/common';
+import { type ApplicationLogger } from '@/helpers';
 interface IRequestOptions {
     url: string;
     method?: TRequestMethod;

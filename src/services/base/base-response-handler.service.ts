@@ -1,4 +1,5 @@
 import type { RequestTypes } from '@/common';
+import { injectable } from 'tsyringe';
 
 export interface IBaseResponseHandlerService {
   convertResponse: <T>(opts: {
@@ -8,6 +9,7 @@ export interface IBaseResponseHandlerService {
   }) => T;
 }
 
+@injectable()
 export class BaseResponseHandlerService implements IBaseResponseHandlerService {
   convertResponse<T>(opts: {
     response: { data: any | any[]; headers: Record<string, any> };

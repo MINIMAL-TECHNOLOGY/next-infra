@@ -34,6 +34,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -83,17 +86,17 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LBDataProviderService = void 0;
-var common_1 = require("../../common");
-var utilities_1 = require("../../utilities");
-var lodash_utility_1 = require("../../utilities/lodash.utility");
-var services_1 = require("../../services");
+var common_1 = require("@/common");
+var utilities_1 = require("@/utilities");
+var lodash_utility_1 = require("@/utilities/lodash.utility");
+var services_1 = require("@/services");
 var tsyringe_1 = require("tsyringe");
+var helpers_1 = require("@/helpers");
 var LBDataProviderService = /** @class */ (function (_super) {
     __extends(LBDataProviderService, _super);
-    function LBDataProviderService(opts) {
-        return _super.call(this, { baseUrl: opts.baseUrl, scopes: [LBDataProviderService_1.name] }) || this;
+    function LBDataProviderService(networkHelper, baseUrl) {
+        return _super.call(this, networkHelper, baseUrl) || this;
     }
-    LBDataProviderService_1 = LBDataProviderService;
     // -------------------------------------------------------------
     // GET_LIST
     // -------------------------------------------------------------
@@ -418,10 +421,11 @@ var LBDataProviderService = /** @class */ (function (_super) {
             });
         });
     };
-    var LBDataProviderService_1;
-    LBDataProviderService = LBDataProviderService_1 = __decorate([
+    LBDataProviderService = __decorate([
         (0, tsyringe_1.injectable)(),
-        __metadata("design:paramtypes", [Object])
+        __param(0, (0, tsyringe_1.inject)(common_1.BindingKeys.NETWORK_HELPER_FACTORY)),
+        __param(1, (0, tsyringe_1.inject)(common_1.BindingKeys.APPLICATION_SEND_BASE_URL)),
+        __metadata("design:paramtypes", [helpers_1.NetworkHelper, String])
     ], LBDataProviderService);
     return LBDataProviderService;
 }(services_1.BaseDataProviderService));

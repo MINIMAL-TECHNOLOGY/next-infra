@@ -10,6 +10,15 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -59,8 +68,9 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NetworkHelper = void 0;
-var helpers_1 = require("../helpers");
-var utilities_1 = require("../utilities");
+var helpers_1 = require("@/helpers");
+var utilities_1 = require("@/utilities");
+var tsyringe_1 = require("tsyringe");
 var HTTP = 'http';
 var HTTPS = 'https';
 // -------------------------------------------------------------
@@ -69,9 +79,10 @@ var NetworkHelper = /** @class */ (function () {
         var _a;
         var name = opts.name;
         this.name = name;
-        this.logger = helpers_1.LoggerFactory.getLogger((_a = opts.scopes) !== null && _a !== void 0 ? _a : [NetworkHelper.name]);
+        this.logger = helpers_1.LoggerFactory.getLogger((_a = opts.scopes) !== null && _a !== void 0 ? _a : [NetworkHelper_1.name]);
         this.logger.info('Creating new network request worker instance! Name: %s', this.name);
     }
+    NetworkHelper_1 = NetworkHelper;
     NetworkHelper.prototype.getProtocol = function (url) {
         return url.startsWith('http:') ? HTTP : HTTPS;
     };
@@ -185,6 +196,11 @@ var NetworkHelper = /** @class */ (function () {
             });
         });
     };
+    var NetworkHelper_1;
+    NetworkHelper = NetworkHelper_1 = __decorate([
+        (0, tsyringe_1.injectable)(),
+        __metadata("design:paramtypes", [Object])
+    ], NetworkHelper);
     return NetworkHelper;
 }());
 exports.NetworkHelper = NetworkHelper;

@@ -10,6 +10,18 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -59,20 +71,22 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseDataProviderService = void 0;
-var common_1 = require("../../common");
-var helpers_1 = require("../../helpers");
-var utilities_1 = require("../../utilities");
+var common_1 = require("@/common");
+var helpers_1 = require("@/helpers");
+var utilities_1 = require("@/utilities");
 var tsyringe_1 = require("tsyringe");
 // -------------------------------------------------------------
 var BaseDataProviderService = /** @class */ (function () {
-    function BaseDataProviderService(opts) {
-        var _a;
-        this.networkHelper = new helpers_1.NetworkHelper({
-            name: (_a = opts.name) !== null && _a !== void 0 ? _a : 'APPLICATION_NETWORK_SERVICE',
-            scopes: opts.scopes,
-        });
-        this.baseUrl = opts.baseUrl;
+    function BaseDataProviderService(networkHelper, baseUrl) {
+        this.networkHelper = networkHelper;
+        this.baseUrl = baseUrl;
     }
+    // -------------------------------------------------------------
+    // CHANGE_BASE_URL
+    // -------------------------------------------------------------
+    BaseDataProviderService.prototype.changeBaseUrl = function (baseUrl) {
+        this.baseUrl = baseUrl;
+    };
     // -------------------------------------------------------------
     // GET_REQUEST_PROPS
     // -------------------------------------------------------------
@@ -143,14 +157,15 @@ var BaseDataProviderService = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var type, baseUrl, method, paths, body, headers, query, params, url, bodyOpts;
             var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         type = opts.type, baseUrl = opts.baseUrl, method = opts.method, paths = opts.paths, body = opts.body, headers = opts.headers, query = opts.query, params = opts.params;
                         if (!baseUrl || (0, utilities_1.isEmpty)(baseUrl)) {
                             throw (0, utilities_1.getError)({ message: '[doRequest] Invalid baseUrl to send request!' });
                         }
-                        url = this.getRequestUrl({ baseUrl: baseUrl, paths: paths });
+                        url = this.getRequestUrl({ baseUrl: (_a = opts.baseUrl) !== null && _a !== void 0 ? _a : this.baseUrl, paths: paths });
                         bodyOpts = method === 'GET' ? undefined : body;
                         return [4 /*yield*/, new Promise(function (resolve, reject) {
                                 _this.networkHelper
@@ -208,7 +223,7 @@ var BaseDataProviderService = /** @class */ (function () {
                                     reject(error);
                                 });
                             })];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 1: return [2 /*return*/, _b.sent()];
                 }
             });
         });
@@ -239,6 +254,12 @@ var BaseDataProviderService = /** @class */ (function () {
             });
         });
     };
+    BaseDataProviderService = __decorate([
+        (0, tsyringe_1.injectable)(),
+        __param(0, (0, tsyringe_1.inject)(common_1.BindingKeys.NETWORK_HELPER_FACTORY)),
+        __param(1, (0, tsyringe_1.inject)(common_1.BindingKeys.APPLICATION_SEND_BASE_URL)),
+        __metadata("design:paramtypes", [helpers_1.NetworkHelper, String])
+    ], BaseDataProviderService);
     return BaseDataProviderService;
 }());
 exports.BaseDataProviderService = BaseDataProviderService;

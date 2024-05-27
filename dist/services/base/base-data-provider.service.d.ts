@@ -1,7 +1,8 @@
-import { RequestTypes } from '../../common';
-import type { IParam, IRequestProps, TRequestMethod } from '../../common/types';
-import { NetworkHelper } from '../../helpers';
+import { RequestTypes } from '@/common';
+import type { IParam, IRequestProps, TRequestMethod } from '@/common/types';
+import { NetworkHelper } from '@/helpers';
 export interface IBaseRestRequestService {
+    changeBaseUrl: (baseUrl: string) => void;
     getRequestUrl: (opts: {
         baseUrl?: string;
         paths: string[];
@@ -21,13 +22,10 @@ export interface IBaseRestRequestService {
     }) => Promise<T | Record<string, any>>;
 }
 export declare class BaseDataProviderService implements IBaseRestRequestService {
-    protected baseUrl: string | undefined;
-    protected networkHelper: NetworkHelper;
-    constructor(opts: {
-        name?: string;
-        baseUrl?: string;
-        scopes?: string[];
-    });
+    private readonly networkHelper;
+    private baseUrl;
+    constructor(networkHelper: NetworkHelper, baseUrl: string);
+    changeBaseUrl(baseUrl: string): void;
     getRequestProps(params: IParam): IRequestProps;
     getRequestUrl(opts: {
         baseUrl?: string;

@@ -1,8 +1,9 @@
-import { RequestTypes, type TAnyObject, type IParam } from '@/common';
+import { RequestTypes, type TAnyObject, type IParam, BindingKeys } from '@/common';
 import { getError } from '@/utilities';
 import { omit } from '@/utilities/lodash.utility';
 import { BaseDataProviderService } from '@/services';
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
+import { NetworkHelper } from '@/helpers';
 
 // -------------------------------------------------------------
 export interface ILBDataProvider {
@@ -19,8 +20,11 @@ export interface ILBDataProvider {
 
 @injectable()
 export class LBDataProviderService extends BaseDataProviderService implements ILBDataProvider {
-  constructor(opts: { baseUrl: string }) {
-    super({ baseUrl: opts.baseUrl, scopes: [LBDataProviderService.name] });
+  constructor(
+    @inject(BindingKeys.NETWORK_HELPER_FACTORY) networkHelper: NetworkHelper,
+    @inject(BindingKeys.APPLICATION_SEND_BASE_URL) baseUrl: string,
+  ) {
+    super(networkHelper, baseUrl);
   }
 
   // -------------------------------------------------------------

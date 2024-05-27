@@ -3,9 +3,10 @@ import type { IParam, IRequestProps, TAnyObject, TRequestMethod } from '@/common
 import { NetworkHelper } from '@/helpers';
 import { type BaseResponseHandlerService } from '@/services';
 import { getError, isEmpty } from '@/utilities';
-import { container } from 'tsyringe';
+import { container, inject, injectable } from 'tsyringe';
 
 export interface IBaseRestRequestService {
+  changeBaseUrl: (baseUrl: string) => void;
   getRequestUrl: (opts: { baseUrl?: string; paths: string[] }) => string;
   getRequestProps: (params: IParam) => IRequestProps;
   doRequest: <T>(
@@ -21,17 +22,18 @@ export interface IBaseRestRequestService {
 }
 
 // -------------------------------------------------------------
+@injectable()
 export class BaseDataProviderService implements IBaseRestRequestService {
-  protected baseUrl: string | undefined;
-  protected networkHelper: NetworkHelper;
+  constructor(
+    @inject(BindingKeys.NETWORK_HELPER_FACTORY) private readonly networkHelper: NetworkHelper,
+    @inject(BindingKeys.APPLICATION_SEND_BASE_URL) private baseUrl: string,
+  ) {}
 
-  constructor(opts: { name?: string; baseUrl?: string; scopes?: string[] }) {
-    this.networkHelper = new NetworkHelper({
-      name: opts.name ?? 'APPLICATION_NETWORK_SERVICE',
-      scopes: opts.scopes,
-    });
-
-    this.baseUrl = opts.baseUrl;
+  // -------------------------------------------------------------
+  // CHANGE_BASE_URL
+  // -------------------------------------------------------------
+  changeBaseUrl(baseUrl: string) {
+    this.baseUrl = baseUrl;
   }
 
   // -------------------------------------------------------------
@@ -131,7 +133,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
       throw getError({ message: '[doRequest] Invalid baseUrl to send request!' });
     }
 
-    const url = this.getRequestUrl({ baseUrl, paths });
+    const url = this.getRequestUrl({ baseUrl: opts.baseUrl ?? this.baseUrl, paths });
 
     // Fetch API: Request with GET/HEAD method cannot have body
     const bodyOpts = method === 'GET' ? undefined : body;

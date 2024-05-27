@@ -1,11 +1,20 @@
 import { BindingKeys, DataProviders } from '@/common';
+import { NetworkHelper } from '@/helpers';
 import {
   BaseDataProviderService,
   BaseResponseHandlerService,
   LBDataProviderService,
   LBResponseHandlerService,
 } from '@/services';
-import { container } from 'tsyringe';
+import { container, instanceCachingFactory } from 'tsyringe';
+
+container.register(BindingKeys.NETWORK_HELPER_FACTORY, {
+  useFactory: instanceCachingFactory<NetworkHelper>(() => {
+    return new NetworkHelper({
+      name: 'APPLICATION_NETWORK_SERVICE',
+    });
+  }),
+});
 
 container.register(BindingKeys.RESPONSE_HANDLER_DATA_PROVIDER, {
   useFactory: c => {
