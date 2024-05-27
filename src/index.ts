@@ -20,7 +20,7 @@ applicationLogger.info('- Data Provider: %s', APP_ENV_DATA_PROVIDER_IDENTIFIER);
 applicationLogger.info('- Send base url: %s', APP_ENV_SEND_BASE_URL ?? 'N/A');
 applicationLogger.info('------------------------------------');
 
-if (DataProviders.isValid(APP_ENV_DATA_PROVIDER_IDENTIFIER)) {
+if (!DataProviders.isValid(APP_ENV_DATA_PROVIDER_IDENTIFIER)) {
   throw getError({ message: 'Invalid data provider' });
 }
 

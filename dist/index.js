@@ -15,7 +15,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("@abraham/reflection");
-var helpers_1 = require("./helpers");
+var helpers_1 = require("@/helpers");
 var tsyringe_1 = require("tsyringe");
 var common_1 = require("./common");
 var utilities_1 = require("./utilities");
@@ -27,7 +27,7 @@ helpers_1.applicationLogger.info('- Name: %s', APP_ENV_APPLICATION_NAME);
 helpers_1.applicationLogger.info('- Data Provider: %s', APP_ENV_DATA_PROVIDER_IDENTIFIER);
 helpers_1.applicationLogger.info('- Send base url: %s', APP_ENV_SEND_BASE_URL !== null && APP_ENV_SEND_BASE_URL !== void 0 ? APP_ENV_SEND_BASE_URL : 'N/A');
 helpers_1.applicationLogger.info('------------------------------------');
-if (common_1.DataProviders.isValid(APP_ENV_DATA_PROVIDER_IDENTIFIER)) {
+if (!common_1.DataProviders.isValid(APP_ENV_DATA_PROVIDER_IDENTIFIER)) {
     throw (0, utilities_1.getError)({ message: 'Invalid data provider' });
 }
 tsyringe_1.container.register(common_1.BindingKeys.DATA_PROVIDER_IDENTIFIER, { useValue: APP_ENV_DATA_PROVIDER_IDENTIFIER });

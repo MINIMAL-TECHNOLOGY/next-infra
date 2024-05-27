@@ -28,7 +28,7 @@ container.register(BindingKeys.RESPONSE_HANDLER_DATA_PROVIDER, {
         return c.resolve(LBResponseHandlerService.name);
       }
       case DataProviders.BASE: {
-        return c.resolve(BaseDataProviderService.name);
+        return c.resolve(BaseResponseHandlerService.name);
       }
       default: {
         throw getError({ message: 'Invalid data provider' });
@@ -46,7 +46,7 @@ container.register(BindingKeys.NEXT_DATA_PROVIDER_PROVIDER, {
         return c.resolve(LBDataProviderService.name);
       }
       case DataProviders.BASE: {
-        return c.resolve(BaseResponseHandlerService.name);
+        return c.resolve(BaseDataProviderService.name);
       }
       default: {
         throw getError({ message: 'Invalid data provider' });
