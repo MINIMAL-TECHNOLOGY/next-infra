@@ -1,8 +1,8 @@
 import '@abraham/reflection';
 import { applicationLogger } from '@/helpers';
 import { container } from 'tsyringe';
-import { BindingKeys, DataProviders } from './common';
-import { getError } from './utilities';
+import { BindingKeys, DataProviders } from '@/common';
+import { getError } from '@/utilities';
 
 const {
   NODE_ENV,
@@ -27,6 +27,7 @@ if (!DataProviders.isValid(APP_ENV_DATA_PROVIDER_IDENTIFIER)) {
 container.register(BindingKeys.DATA_PROVIDER_IDENTIFIER, { useValue: APP_ENV_DATA_PROVIDER_IDENTIFIER });
 container.register(BindingKeys.APPLICATION_SEND_BASE_URL, { useValue: APP_ENV_SEND_BASE_URL });
 
+export * from './common';
 export * from './helpers';
 export * from './services';
 export * from './utilities';
