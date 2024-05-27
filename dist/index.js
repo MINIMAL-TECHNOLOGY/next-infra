@@ -15,7 +15,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("@abraham/reflection");
-var helpers_1 = require("@/helpers");
+var helpers_1 = require("./helpers");
 var tsyringe_1 = require("tsyringe");
 var common_1 = require("./common");
 var utilities_1 = require("./utilities");
