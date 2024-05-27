@@ -1,4 +1,4 @@
-import { BindingKeys, RequestTypes, type IParam, type TAnyObject } from '@/common';
+import { BindingKeys, RequestTypes, type IParam } from '@/common';
 import { NetworkHelper } from '@/helpers';
 import { BaseDataProviderService, type IBaseRestRequestService } from '@/services';
 import { getError } from '@/utilities';
@@ -7,15 +7,15 @@ import { container, inject, injectable } from 'tsyringe';
 
 // -------------------------------------------------------------
 export interface ILBDataProvider extends IBaseRestRequestService {
-  getList: <T>(resource: string, params: Record<string, any>) => Promise<T | TAnyObject>;
-  getOne: <T>(resource: string, params: Record<string, any>) => Promise<T | TAnyObject>;
-  getMany: <T>(resource: string, params: Record<string, any>) => Promise<T | TAnyObject>;
-  getManyReference: <T>(resource: string, params: Record<string, any>) => Promise<T | TAnyObject>;
-  create: <T>(resource: string, params: IParam) => Promise<T | TAnyObject>;
-  update: <T>(resource: string, params: IParam) => Promise<T | TAnyObject>;
-  updateMany: <T>(resource: string, params: IParam) => Promise<T | TAnyObject>;
-  delete: <T>(resource: string, params: Record<string, any>) => Promise<T | TAnyObject>;
-  deleteMany: <T>(resource: string, params: IParam & Record<string, any>) => Promise<T | TAnyObject>;
+  getList: <T>(resource: string, params: Record<string, any>) => Promise<T>;
+  getOne: <T>(resource: string, params: Record<string, any>) => Promise<T>;
+  getMany: <T>(resource: string, params: Record<string, any>) => Promise<T>;
+  getManyReference: <T>(resource: string, params: Record<string, any>) => Promise<T>;
+  create: <T>(resource: string, params: IParam) => Promise<T>;
+  update: <T>(resource: string, params: IParam) => Promise<T>;
+  updateMany: <T>(resource: string, params: IParam) => Promise<T>;
+  delete: <T>(resource: string, params: Record<string, any>) => Promise<T>;
+  deleteMany: <T>(resource: string, params: IParam & Record<string, any>) => Promise<T>;
 }
 
 @injectable()
@@ -376,9 +376,10 @@ export class LBDataProviderService extends BaseDataProviderService implements IL
         });
       }),
     ).then(responses => {
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       return {
         data: responses.map((response: any) => response.data),
-      };
+      } as T;
     });
   }
 }

@@ -191,6 +191,7 @@ var BaseDataProviderService = /** @class */ (function () {
                                             case 1: return [2 /*return*/, _c.sent()];
                                             case 2:
                                                 if (status === 204) {
+                                                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                                                     resolve({});
                                                 }
                                                 _c.label = 3;

@@ -412,6 +412,7 @@ var LBDataProviderService = /** @class */ (function (_super) {
                                     }
                                 });
                             }); })).then(function (responses) {
+                                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                                 return {
                                     data: responses.map(function (response) { return response.data; }),
                                 };

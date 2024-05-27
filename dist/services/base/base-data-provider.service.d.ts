@@ -14,12 +14,12 @@ export interface IBaseRestRequestService {
         method: TRequestMethod;
         paths: string[];
         params?: Record<string, any>;
-    }) => Promise<T | Record<string, any>>;
+    }) => Promise<T>;
     send: <T>(opts: {
         baseUrl?: string;
         resource: string;
         params: IParam;
-    }) => Promise<T | Record<string, any>>;
+    }) => Promise<T>;
 }
 export declare class BaseDataProviderService implements IBaseRestRequestService {
     private readonly networkHelper;
@@ -37,10 +37,10 @@ export declare class BaseDataProviderService implements IBaseRestRequestService 
         method: TRequestMethod;
         paths: string[];
         params?: Record<string, any>;
-    }): Promise<T | Record<string, any>>;
+    }): Promise<T>;
     send<T>(opts: {
         baseUrl?: string;
         resource: string;
         params: IParam;
-    }): Promise<Record<string, any> | T>;
+    }): Promise<T>;
 }

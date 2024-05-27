@@ -17,8 +17,8 @@ export interface IBaseRestRequestService {
       paths: string[];
       params?: Record<string, any>;
     },
-  ) => Promise<T | Record<string, any>>;
-  send: <T>(opts: { baseUrl?: string; resource: string; params: IParam }) => Promise<T | Record<string, any>>;
+  ) => Promise<T>;
+  send: <T>(opts: { baseUrl?: string; resource: string; params: IParam }) => Promise<T>;
 }
 
 // -------------------------------------------------------------
@@ -126,7 +126,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
       paths: string[];
       params?: Record<string, any>;
     },
-  ): Promise<T | Record<string, any>> {
+  ): Promise<T> {
     const { type, baseUrl = this.baseUrl, method, paths, body, headers, query, params } = opts;
 
     if (!baseUrl || isEmpty(baseUrl)) {
@@ -157,7 +157,8 @@ export class BaseDataProviderService implements IBaseRestRequestService {
               throw new Error(`${json?.error?.message}`);
             });
           } else if (status === 204) {
-            resolve({});
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            resolve({} as T);
           }
 
           if ([rs.headers?.get('content-type'), rs.headers?.get('Content-Type')].includes('application/octet-stream')) {
