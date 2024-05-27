@@ -1,6 +1,6 @@
-import { type TAnyObject, type IParam } from '@/common';
-import { BaseDataProviderService } from '@/services';
-import { NetworkHelper } from '@/helpers';
+import { type TAnyObject, type IParam } from '../../common';
+import { BaseDataProviderService } from '../../services';
+import { NetworkHelper } from '../../helpers';
 export interface ILBDataProvider {
     getList: <T>(resource: string, params: Record<string, any>) => Promise<T | TAnyObject>;
     getOne: <T>(resource: string, params: Record<string, any>) => Promise<T | TAnyObject>;
