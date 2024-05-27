@@ -8,10 +8,13 @@ export interface IBaseResponseHandlerService {
   }) => T;
 }
 
-export abstract class BaseResponseHandlerService implements IBaseResponseHandlerService {
-  abstract convertResponse<T>(opts: {
+export class BaseResponseHandlerService implements IBaseResponseHandlerService {
+  convertResponse<T>(opts: {
     response: { data: any | any[]; headers: Record<string, any> };
     type: RequestTypes;
     params: any;
-  }): T;
+  }): T {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return { data: opts.response.data } as T;
+  }
 }

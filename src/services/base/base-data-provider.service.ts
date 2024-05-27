@@ -21,7 +21,7 @@ export interface IBaseRestRequestService {
 }
 
 // -------------------------------------------------------------
-export abstract class BaseDataProviderService implements IBaseRestRequestService {
+export class BaseDataProviderService implements IBaseRestRequestService {
   protected baseUrl: string | undefined;
   protected networkHelper: NetworkHelper;
 

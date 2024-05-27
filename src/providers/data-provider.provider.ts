@@ -1,7 +1,11 @@
 import { BindingKeys, DataProviders } from '@/common';
+import {
+  BaseDataProviderService,
+  BaseResponseHandlerService,
+  LBDataProviderService,
+  LBResponseHandlerService,
+} from '@/services';
 import { container } from 'tsyringe';
-import { LBDataProviderService, LBResponseHandlerService } from '@/services';
-import { getError } from '@/utilities';
 
 container.register(BindingKeys.RESPONSE_HANDLER_DATA_PROVIDER, {
   useFactory: c => {
@@ -12,7 +16,7 @@ container.register(BindingKeys.RESPONSE_HANDLER_DATA_PROVIDER, {
         return c.resolve(LBResponseHandlerService);
       }
       default: {
-        throw getError({ message: 'Invalid data provider' });
+        return c.resolve(BaseDataProviderService);
       }
     }
   },
@@ -27,7 +31,7 @@ container.register(BindingKeys.NEXT_DATA_PROVIDER_PROVIDER, {
         return c.resolve(LBDataProviderService);
       }
       default: {
-        throw getError({ message: 'Invalid data provider' });
+        return c.resolve(BaseResponseHandlerService);
       }
     }
   },

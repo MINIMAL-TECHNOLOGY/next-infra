@@ -1,6 +1,6 @@
-import { RequestTypes } from '../../common';
-import type { IParam, IRequestProps, TRequestMethod } from '../../common/types';
-import { NetworkHelper } from '../../helpers';
+import { RequestTypes } from '@/common';
+import type { IParam, IRequestProps, TRequestMethod } from '@/common/types';
+import { NetworkHelper } from '@/helpers';
 export interface IBaseRestRequestService {
     getRequestUrl: (opts: {
         baseUrl?: string;
@@ -20,7 +20,7 @@ export interface IBaseRestRequestService {
         params: IParam;
     }) => Promise<T | Record<string, any>>;
 }
-export declare abstract class BaseDataProviderService implements IBaseRestRequestService {
+export declare class BaseDataProviderService implements IBaseRestRequestService {
     protected baseUrl: string | undefined;
     protected networkHelper: NetworkHelper;
     constructor(opts: {

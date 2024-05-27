@@ -1,4 +1,4 @@
-import type { RequestTypes } from '../../common';
+import type { RequestTypes } from '@/common';
 export interface IBaseResponseHandlerService {
     convertResponse: <T>(opts: {
         response: {
@@ -9,8 +9,8 @@ export interface IBaseResponseHandlerService {
         params: any;
     }) => T;
 }
-export declare abstract class BaseResponseHandlerService implements IBaseResponseHandlerService {
-    abstract convertResponse<T>(opts: {
+export declare class BaseResponseHandlerService implements IBaseResponseHandlerService {
+    convertResponse<T>(opts: {
         response: {
             data: any | any[];
             headers: Record<string, any>;
