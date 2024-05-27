@@ -15,7 +15,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("@abraham/reflection");
-var helpers_1 = require("./helpers");
+var helpers_1 = require("@/helpers");
 var tsyringe_1 = require("tsyringe");
 var common_1 = require("./common");
 var _a = process.env, NODE_ENV = _a.NODE_ENV, RUN_MODE = _a.RUN_MODE, APP_ENV_DATA_PROVIDER_IDENTIFIER = _a.APP_ENV_DATA_PROVIDER_IDENTIFIER, _b = _a.APP_ENV_APPLICATION_NAME, APP_ENV_APPLICATION_NAME = _b === void 0 ? 'NextJS Infrastructure' : _b;
@@ -29,4 +29,5 @@ tsyringe_1.container.register(common_1.BindingKeys.DATA_PROVIDER_IDENTIFIER, { u
 __exportStar(require("./helpers"), exports);
 __exportStar(require("./services"), exports);
 __exportStar(require("./utilities"), exports);
+__exportStar(require("./providers"), exports);
 //# sourceMappingURL=index.js.map
