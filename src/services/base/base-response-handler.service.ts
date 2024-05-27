@@ -1,5 +1,5 @@
 import type { RequestTypes } from '@/common';
-import { injectable } from 'tsyringe';
+import { container, injectable } from 'tsyringe';
 
 export interface IBaseResponseHandlerService {
   convertResponse: <T>(opts: {
@@ -20,3 +20,5 @@ export class BaseResponseHandlerService implements IBaseResponseHandlerService {
     return { data: opts.response.data } as T;
   }
 }
+
+container.register(BaseResponseHandlerService.name, { useClass: BaseResponseHandlerService });

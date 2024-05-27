@@ -21,4 +21,5 @@ var BaseResponseHandlerService = /** @class */ (function () {
     return BaseResponseHandlerService;
 }());
 exports.BaseResponseHandlerService = BaseResponseHandlerService;
+tsyringe_1.container.register(BaseResponseHandlerService.name, { useClass: BaseResponseHandlerService });
 //# sourceMappingURL=base-response-handler.service.js.map

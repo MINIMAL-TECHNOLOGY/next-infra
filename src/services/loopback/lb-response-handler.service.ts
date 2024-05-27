@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import { RequestTypes } from '@/common';
-import { BaseResponseHandlerService } from '@/services';
+import { BaseResponseHandlerService, type IBaseResponseHandlerService } from '@/services';
 import { getError } from '@/utilities';
-import { injectable } from 'tsyringe';
+import { container, injectable } from 'tsyringe';
 
-export interface ILBResponseHandlerService {
+export interface ILBResponseHandlerService extends IBaseResponseHandlerService {
   handleCreate: <T>(opts: { data: any | any[]; params: any }) => T;
   handleGetListAndGetManyReference: <T>(opts: { data: any | any[]; headers: Record<string, any> }) => T;
 }
@@ -77,3 +77,5 @@ export class LBResponseHandlerService extends BaseResponseHandlerService impleme
     }
   }
 }
+
+container.register(LBResponseHandlerService.name, { useClass: LBResponseHandlerService });

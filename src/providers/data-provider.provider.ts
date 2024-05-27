@@ -5,7 +5,10 @@ import {
   BaseResponseHandlerService,
   LBDataProviderService,
   LBResponseHandlerService,
+  type IBaseResponseHandlerService,
+  type IBaseRestRequestService,
 } from '@/services';
+import { getError } from '@/utilities';
 import { container, instanceCachingFactory } from 'tsyringe';
 
 container.register(BindingKeys.NETWORK_HELPER_FACTORY, {
@@ -17,30 +20,36 @@ container.register(BindingKeys.NETWORK_HELPER_FACTORY, {
 });
 
 container.register(BindingKeys.RESPONSE_HANDLER_DATA_PROVIDER, {
-  useFactory: c => {
-    const currentDataProvider = c.resolve<DataProviders>(BindingKeys.DATA_PROVIDER_IDENTIFIER);
+  useFactory: (c): IBaseResponseHandlerService => {
+    const currentDataProvider = c.resolve<string>(BindingKeys.DATA_PROVIDER_IDENTIFIER);
 
     switch (currentDataProvider) {
       case DataProviders.LOOPBACK: {
-        return c.resolve(LBResponseHandlerService);
+        return c.resolve(LBResponseHandlerService.name);
+      }
+      case DataProviders.BASE: {
+        return c.resolve(BaseDataProviderService.name);
       }
       default: {
-        return c.resolve(BaseDataProviderService);
+        throw getError({ message: 'Invalid data provider' });
       }
     }
   },
 });
 
 container.register(BindingKeys.NEXT_DATA_PROVIDER_PROVIDER, {
-  useFactory: c => {
-    const currentDataProvider = c.resolve<DataProviders>(BindingKeys.DATA_PROVIDER_IDENTIFIER);
+  useFactory: (c): IBaseRestRequestService => {
+    const currentDataProvider = c.resolve<string>(BindingKeys.DATA_PROVIDER_IDENTIFIER);
 
     switch (currentDataProvider) {
       case DataProviders.LOOPBACK: {
-        return c.resolve(LBDataProviderService);
+        return c.resolve(LBDataProviderService.name);
+      }
+      case DataProviders.BASE: {
+        return c.resolve(BaseResponseHandlerService.name);
       }
       default: {
-        return c.resolve(BaseResponseHandlerService);
+        throw getError({ message: 'Invalid data provider' });
       }
     }
   },

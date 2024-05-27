@@ -27,7 +27,8 @@ var DataProviders = /** @class */ (function () {
     var _a;
     _a = DataProviders;
     DataProviders.LOOPBACK = 'loopback';
-    DataProviders.SCHEME_SET = new Set([_a.LOOPBACK]);
+    DataProviders.BASE = 'base';
+    DataProviders.SCHEME_SET = new Set([_a.LOOPBACK, _a.BASE]);
     return DataProviders;
 }());
 exports.DataProviders = DataProviders;

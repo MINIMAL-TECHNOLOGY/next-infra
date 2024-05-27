@@ -1,12 +1,12 @@
-import { RequestTypes, type TAnyObject, type IParam, BindingKeys } from '@/common';
+import { BindingKeys, RequestTypes, type IParam, type TAnyObject } from '@/common';
+import { NetworkHelper } from '@/helpers';
+import { BaseDataProviderService, type IBaseRestRequestService } from '@/services';
 import { getError } from '@/utilities';
 import { omit } from '@/utilities/lodash.utility';
-import { BaseDataProviderService } from '@/services';
-import { inject, injectable } from 'tsyringe';
-import { NetworkHelper } from '@/helpers';
+import { container, inject, injectable } from 'tsyringe';
 
 // -------------------------------------------------------------
-export interface ILBDataProvider {
+export interface ILBDataProvider extends IBaseRestRequestService {
   getList: <T>(resource: string, params: Record<string, any>) => Promise<T | TAnyObject>;
   getOne: <T>(resource: string, params: Record<string, any>) => Promise<T | TAnyObject>;
   getMany: <T>(resource: string, params: Record<string, any>) => Promise<T | TAnyObject>;
@@ -382,3 +382,5 @@ export class LBDataProviderService extends BaseDataProviderService implements IL
     });
   }
 }
+
+container.register(LBDataProviderService.name, { useClass: LBDataProviderService });

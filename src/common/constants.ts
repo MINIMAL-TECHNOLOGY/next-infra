@@ -15,7 +15,8 @@ export class RequestTypes {
 
 export class DataProviders {
   static readonly LOOPBACK = 'loopback';
-  static readonly SCHEME_SET = new Set([this.LOOPBACK]);
+  static readonly BASE = 'base';
+  static readonly SCHEME_SET = new Set([this.LOOPBACK, this.BASE]);
 
   static isValid(scheme: string): boolean {
     return this.SCHEME_SET.has(scheme);

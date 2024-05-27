@@ -12,6 +12,7 @@ export declare class RequestTypes {
 }
 export declare class DataProviders {
     static readonly LOOPBACK = "loopback";
+    static readonly BASE = "base";
     static readonly SCHEME_SET: Set<string>;
     static isValid(scheme: string): boolean;
 }

@@ -1,6 +1,6 @@
-import { RequestTypes } from '../../common';
-import type { IParam, IRequestProps, TRequestMethod } from '../../common/types';
-import { NetworkHelper } from '../../helpers';
+import { RequestTypes } from '@/common';
+import type { IParam, IRequestProps, TRequestMethod } from '@/common/types';
+import { NetworkHelper } from '@/helpers';
 export interface IBaseRestRequestService {
     changeBaseUrl: (baseUrl: string) => void;
     getRequestUrl: (opts: {

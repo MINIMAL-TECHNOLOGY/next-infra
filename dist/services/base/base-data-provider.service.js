@@ -263,4 +263,5 @@ var BaseDataProviderService = /** @class */ (function () {
     return BaseDataProviderService;
 }());
 exports.BaseDataProviderService = BaseDataProviderService;
+tsyringe_1.container.register(BaseDataProviderService.name, { useClass: BaseDataProviderService });
 //# sourceMappingURL=base-data-provider.service.js.map

@@ -34,9 +34,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LBResponseHandlerService = void 0;
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-var common_1 = require("../../common");
-var services_1 = require("../../services");
-var utilities_1 = require("../../utilities");
+var common_1 = require("@/common");
+var services_1 = require("@/services");
+var utilities_1 = require("@/utilities");
 var tsyringe_1 = require("tsyringe");
 var LBResponseHandlerService = /** @class */ (function (_super) {
     __extends(LBResponseHandlerService, _super);
@@ -99,4 +99,5 @@ var LBResponseHandlerService = /** @class */ (function (_super) {
     return LBResponseHandlerService;
 }(services_1.BaseResponseHandlerService));
 exports.LBResponseHandlerService = LBResponseHandlerService;
+tsyringe_1.container.register(LBResponseHandlerService.name, { useClass: LBResponseHandlerService });
 //# sourceMappingURL=lb-response-handler.service.js.map
