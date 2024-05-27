@@ -11,7 +11,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a;
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoggerFactory = exports.ApplicationLogger = exports.applicationLogger = exports.applicationLogFormatter = void 0;
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -19,9 +19,9 @@ var path_1 = __importDefault(require("path"));
 var winston_1 = require("winston");
 require("winston-daily-rotate-file");
 var isEmpty_1 = __importDefault(require("lodash/isEmpty"));
-var LOGGER_FOLDER_PATH = (_a = process.env.APP_ENV_LOGGER_FOLDER_PATH) !== null && _a !== void 0 ? _a : './';
+var LOGGER_FOLDER_PATH = (_a = process.env.APP_ENV_LOGGER_FOLDER_PATH) !== null && _a !== void 0 ? _a : './app_data/logs';
 var LOG_ENVIRONMENTS = new Set(['development', 'alpha', 'beta', 'staging']);
-var LOGGER_PREFIX = process.env.APP_ENV_APPLICATION_NAME;
+var LOGGER_PREFIX = (_b = process.env.APP_ENV_APPLICATION_NAME) !== null && _b !== void 0 ? _b : 'next-infra';
 var consoleLogTransport = new winston_1.transports.Console({
     level: 'debug',
 });

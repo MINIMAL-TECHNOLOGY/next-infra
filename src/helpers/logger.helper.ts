@@ -4,9 +4,9 @@ import { transports, format, createLogger, type Logform } from 'winston';
 import 'winston-daily-rotate-file';
 import isEmpty from 'lodash/isEmpty';
 
-const LOGGER_FOLDER_PATH = process.env.APP_ENV_LOGGER_FOLDER_PATH ?? './';
+const LOGGER_FOLDER_PATH = process.env.APP_ENV_LOGGER_FOLDER_PATH ?? './app_data/logs';
 const LOG_ENVIRONMENTS = new Set(['development', 'alpha', 'beta', 'staging']);
-const LOGGER_PREFIX = process.env.APP_ENV_APPLICATION_NAME;
+const LOGGER_PREFIX = process.env.APP_ENV_APPLICATION_NAME ?? 'next-infra';
 
 const consoleLogTransport = new transports.Console({
   level: 'debug',
