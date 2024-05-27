@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.container = void 0;
-var common_1 = require("@/common");
-var services_1 = require("@/services");
+var common_1 = require("../common");
+var services_1 = require("../services");
 var tsyringe_1 = require("tsyringe");
 Object.defineProperty(exports, "container", { enumerable: true, get: function () { return tsyringe_1.container; } });
 tsyringe_1.container.register(common_1.BindingKeys.RESPONSE_HANDLER_DATA_PROVIDER, {
