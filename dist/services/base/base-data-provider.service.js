@@ -155,17 +155,16 @@ var BaseDataProviderService = /** @class */ (function () {
     // -------------------------------------------------------------
     BaseDataProviderService.prototype.doRequest = function (opts) {
         return __awaiter(this, void 0, void 0, function () {
-            var type, baseUrl, method, paths, body, headers, query, params, url, bodyOpts;
+            var type, _a, baseUrl, method, paths, body, headers, query, params, url, bodyOpts;
             var _this = this;
-            var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        type = opts.type, baseUrl = opts.baseUrl, method = opts.method, paths = opts.paths, body = opts.body, headers = opts.headers, query = opts.query, params = opts.params;
+                        type = opts.type, _a = opts.baseUrl, baseUrl = _a === void 0 ? this.baseUrl : _a, method = opts.method, paths = opts.paths, body = opts.body, headers = opts.headers, query = opts.query, params = opts.params;
                         if (!baseUrl || (0, utilities_1.isEmpty)(baseUrl)) {
                             throw (0, utilities_1.getError)({ message: '[doRequest] Invalid baseUrl to send request!' });
                         }
-                        url = this.getRequestUrl({ baseUrl: (_a = opts.baseUrl) !== null && _a !== void 0 ? _a : this.baseUrl, paths: paths });
+                        url = this.getRequestUrl({ baseUrl: baseUrl, paths: paths });
                         bodyOpts = method === 'GET' ? undefined : body;
                         return [4 /*yield*/, new Promise(function (resolve, reject) {
                                 _this.networkHelper

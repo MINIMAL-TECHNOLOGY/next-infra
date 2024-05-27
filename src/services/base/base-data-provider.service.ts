@@ -127,13 +127,13 @@ export class BaseDataProviderService implements IBaseRestRequestService {
       params?: Record<string, any>;
     },
   ): Promise<T | Record<string, any>> {
-    const { type, baseUrl, method, paths, body, headers, query, params } = opts;
+    const { type, baseUrl = this.baseUrl, method, paths, body, headers, query, params } = opts;
 
     if (!baseUrl || isEmpty(baseUrl)) {
       throw getError({ message: '[doRequest] Invalid baseUrl to send request!' });
     }
 
-    const url = this.getRequestUrl({ baseUrl: opts.baseUrl ?? this.baseUrl, paths });
+    const url = this.getRequestUrl({ baseUrl, paths });
 
     // Fetch API: Request with GET/HEAD method cannot have body
     const bodyOpts = method === 'GET' ? undefined : body;
