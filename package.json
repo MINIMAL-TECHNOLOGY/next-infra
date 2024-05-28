@@ -1,6 +1,6 @@
 {
   "version": "0.0.1",
-  "name": "mt-next-infra",
+  "name": "@mt/next-infra",
   "description": "Next JS Infrastructure",
   "keywords": [
     "next",
