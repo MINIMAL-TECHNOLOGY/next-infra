@@ -213,7 +213,7 @@ var BaseDataProviderService = /** @class */ (function () {
                                     .then(function (response) { return __awaiter(_this, void 0, void 0, function () {
                                     var responseHandlerService, normalized;
                                     return __generator(this, function (_a) {
-                                        responseHandlerService = tsyringe_1.container.resolve(common_1.BindingKeys.RESPONSE_HANDLER_DATA_PROVIDER);
+                                        responseHandlerService = tsyringe_1.container.resolve(common_1.BindingKeys.NEXT_DATA_PROVIDER_HANDLER);
                                         normalized = responseHandlerService.convertResponse({ response: response, type: type, params: params });
                                         resolve(normalized);
                                         return [2 /*return*/];

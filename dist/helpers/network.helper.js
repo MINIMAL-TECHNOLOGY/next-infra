@@ -19,6 +19,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -68,21 +71,19 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NetworkHelper = void 0;
-var helpers_1 = require("../helpers");
+var common_1 = require("../common");
 var utilities_1 = require("../utilities");
 var tsyringe_1 = require("tsyringe");
 var HTTP = 'http';
 var HTTPS = 'https';
 // -------------------------------------------------------------
 var NetworkHelper = /** @class */ (function () {
-    function NetworkHelper(opts) {
-        var _a;
+    function NetworkHelper(logger, opts) {
+        this.logger = logger;
         var name = opts.name;
         this.name = name;
-        this.logger = helpers_1.LoggerFactory.getLogger((_a = opts.scopes) !== null && _a !== void 0 ? _a : [NetworkHelper_1.name], typeof window !== 'undefined');
         this.logger.info(' Creating new network request worker instance! Name: %s', this.name);
     }
-    NetworkHelper_1 = NetworkHelper;
     NetworkHelper.prototype.getProtocol = function (url) {
         return url.startsWith('http:') ? HTTP : HTTPS;
     };
@@ -196,10 +197,10 @@ var NetworkHelper = /** @class */ (function () {
             });
         });
     };
-    var NetworkHelper_1;
-    NetworkHelper = NetworkHelper_1 = __decorate([
+    NetworkHelper = __decorate([
         (0, tsyringe_1.injectable)(),
-        __metadata("design:paramtypes", [Object])
+        __param(0, (0, tsyringe_1.inject)(common_1.BindingKeys.LOGGER_INSTANCE)),
+        __metadata("design:paramtypes", [Object, Object])
     ], NetworkHelper);
     return NetworkHelper;
 }());

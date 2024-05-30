@@ -4,6 +4,3 @@ export interface IBaseLogger {
     info: (message: string, ...args: any[]) => void;
     error: (message: string, ...args: any[]) => void;
 }
-export declare class LoggerFactory {
-    static getLogger(scopes: string[], isClient?: boolean): IBaseLogger;
-}

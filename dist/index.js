@@ -31,7 +31,7 @@ if (!common_1.DataProviders.isValid(APP_ENV_DATA_PROVIDER_IDENTIFIER)) {
     throw (0, utilities_1.getError)({ message: 'Invalid data provider' });
 }
 tsyringe_1.container.register(common_1.BindingKeys.DATA_PROVIDER_IDENTIFIER, { useValue: APP_ENV_DATA_PROVIDER_IDENTIFIER });
-tsyringe_1.container.register(common_1.BindingKeys.APPLICATION_SEND_BASE_URL, { useValue: APP_ENV_SEND_BASE_URL });
+tsyringe_1.container.register(common_1.BindingKeys.APPLICATION_SEND_BASE_URL, { useValue: APP_ENV_SEND_BASE_URL !== null && APP_ENV_SEND_BASE_URL !== void 0 ? APP_ENV_SEND_BASE_URL : '' });
 __exportStar(require("./common"), exports);
 __exportStar(require("./helpers"), exports);
 __exportStar(require("./services"), exports);

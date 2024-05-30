@@ -1,4 +1,4 @@
-import type { TAnyObject, TRequestMethod } from '../common';
+import { type TAnyObject, type TRequestMethod } from '../common';
 import { type IBaseLogger } from '../helpers';
 interface IRequestOptions {
     url: string;
@@ -8,9 +8,9 @@ interface IRequestOptions {
     configs?: object;
 }
 export declare class NetworkHelper {
+    private readonly logger;
     private readonly name;
-    protected logger: IBaseLogger;
-    constructor(opts: {
+    constructor(logger: IBaseLogger, opts: {
         name: string;
         scopes?: string[];
     });
