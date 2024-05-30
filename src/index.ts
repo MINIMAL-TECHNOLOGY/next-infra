@@ -1,5 +1,5 @@
 import '@abraham/reflection';
-import { applicationLogger } from '@/helpers';
+import { applicationLogger } from '@/helpers/server-logger.helper';
 import { container } from 'tsyringe';
 import { BindingKeys, DataProviders } from '@/common';
 import { getError } from '@/utilities';
