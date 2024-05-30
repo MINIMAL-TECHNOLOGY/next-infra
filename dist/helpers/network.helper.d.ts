@@ -1,4 +1,5 @@
-import { type TAnyObject, type TRequestMethod } from '../common';
+import type { TAnyObject, TRequestMethod } from '../common';
+import { type ApplicationLogger } from '../helpers';
 interface IRequestOptions {
     url: string;
     method?: TRequestMethod;
@@ -7,6 +8,12 @@ interface IRequestOptions {
     configs?: object;
 }
 export declare class NetworkHelper {
+    private readonly name;
+    protected logger: ApplicationLogger;
+    constructor(opts: {
+        name: string;
+        scopes?: string[];
+    });
     getProtocol(url: string): "http" | "https";
     send(opts: IRequestOptions): Promise<Response>;
     get(opts: IRequestOptions): Promise<Response>;

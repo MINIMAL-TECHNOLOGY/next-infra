@@ -1,4 +1,5 @@
-import { type TAnyObject, type TRequestMethod } from '@/common';
+import type { TAnyObject, TRequestMethod } from '@/common';
+import { LoggerFactory, type ApplicationLogger } from '@/helpers';
 import { stringify } from '@/utilities';
 import { injectable } from 'tsyringe';
 
@@ -16,6 +17,17 @@ interface IRequestOptions {
 // -------------------------------------------------------------
 @injectable()
 export class NetworkHelper {
+  private readonly name: string;
+  protected logger: ApplicationLogger;
+
+  constructor(opts: { name: string; scopes?: string[] }) {
+    const { name } = opts;
+    this.name = name;
+    this.logger = LoggerFactory.getLogger(opts.scopes ?? [NetworkHelper.name]);
+
+    this.logger.info(' Creating new network request worker instance! Name: %s', this.name);
+  }
+
   getProtocol(url: string) {
     return url.startsWith('http:') ? HTTP : HTTPS;
   }
@@ -24,6 +36,8 @@ export class NetworkHelper {
   // SEND REQUEST
   // -------------------------------------------------------------
   async send(opts: IRequestOptions) {
+    const t = new Date().getTime();
+
     const { url, method = 'GET', params, body, configs } = opts;
     const props = {
       method,
@@ -36,8 +50,10 @@ export class NetworkHelper {
       requestUrl = `${url}?${stringify(params)}`;
     }
 
+    this.logger.info('[send] URL: %s | Props: %o', requestUrl, props);
     const response = await fetch(requestUrl, props);
 
+    this.logger.info(`[network]][send] Took: %s(ms)`, new Date().getTime() - t);
     return response;
   }
 

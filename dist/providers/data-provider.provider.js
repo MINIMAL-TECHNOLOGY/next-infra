@@ -9,7 +9,9 @@ var tsyringe_1 = require("tsyringe");
 Object.defineProperty(exports, "container", { enumerable: true, get: function () { return tsyringe_1.container; } });
 tsyringe_1.container.register(common_1.BindingKeys.NETWORK_HELPER_FACTORY, {
     useFactory: (0, tsyringe_1.instanceCachingFactory)(function () {
-        return new helpers_1.NetworkHelper();
+        return new helpers_1.NetworkHelper({
+            name: 'APPLICATION_NETWORK_SERVICE',
+        });
     }),
 });
 tsyringe_1.container.register(common_1.BindingKeys.NEXT_DATA_PROVIDER_HANDLER, {
