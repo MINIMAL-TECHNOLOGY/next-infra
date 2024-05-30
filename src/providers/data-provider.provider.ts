@@ -1,7 +1,6 @@
 import { BindingKeys, DataProviders } from '@/common';
 import { NetworkHelper, type IBaseLogger } from '@/helpers';
 import { ClientLogger } from '@/helpers/client-logger.helper';
-import { ApplicationLogger } from '@/helpers/server-logger.helper';
 import {
   BaseDataProviderService,
   BaseResponseHandlerService,
@@ -12,6 +11,13 @@ import {
 } from '@/services';
 import { getError } from '@/utilities';
 import { container, instanceCachingFactory } from 'tsyringe';
+
+let ServerLoggerHelper: new () => IBaseLogger;
+
+if (typeof window === 'undefined') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  ServerLoggerHelper = require('../helpers/server-logger.helper').ServerLoggerHelper;
+}
 
 container.register(BindingKeys.NETWORK_HELPER_FACTORY, {
   useFactory: instanceCachingFactory<NetworkHelper>(c => {
@@ -24,9 +30,15 @@ container.register(BindingKeys.NETWORK_HELPER_FACTORY, {
 });
 
 container.register(BindingKeys.LOGGER_INSTANCE, {
-  useFactory: (_c): IBaseLogger => {
+  useFactory: (): IBaseLogger => {
     const isClient = typeof window !== 'undefined';
-    return isClient ? ClientLogger.getInstance() : new ApplicationLogger();
+    if (isClient) {
+      return ClientLogger.getInstance();
+    } else if (ServerLoggerHelper) {
+      return new ServerLoggerHelper();
+    } else {
+      throw new Error('Server logger implementation not found');
+    }
   },
 });
 

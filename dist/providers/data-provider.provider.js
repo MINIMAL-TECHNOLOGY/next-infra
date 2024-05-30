@@ -4,11 +4,15 @@ exports.container = void 0;
 var common_1 = require("../common");
 var helpers_1 = require("../helpers");
 var client_logger_helper_1 = require("../helpers/client-logger.helper");
-var server_logger_helper_1 = require("../helpers/server-logger.helper");
 var services_1 = require("../services");
 var utilities_1 = require("../utilities");
 var tsyringe_1 = require("tsyringe");
 Object.defineProperty(exports, "container", { enumerable: true, get: function () { return tsyringe_1.container; } });
+var ServerLoggerHelper;
+if (typeof window === 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    ServerLoggerHelper = require('../helpers/server-logger.helper').ServerLoggerHelper;
+}
 tsyringe_1.container.register(common_1.BindingKeys.NETWORK_HELPER_FACTORY, {
     useFactory: (0, tsyringe_1.instanceCachingFactory)(function (c) {
         var loggerInstance = c.resolve(common_1.BindingKeys.LOGGER_INSTANCE);
@@ -18,9 +22,17 @@ tsyringe_1.container.register(common_1.BindingKeys.NETWORK_HELPER_FACTORY, {
     }),
 });
 tsyringe_1.container.register(common_1.BindingKeys.LOGGER_INSTANCE, {
-    useFactory: function (_c) {
+    useFactory: function () {
         var isClient = typeof window !== 'undefined';
-        return isClient ? client_logger_helper_1.ClientLogger.getInstance() : new server_logger_helper_1.ApplicationLogger();
+        if (isClient) {
+            return client_logger_helper_1.ClientLogger.getInstance();
+        }
+        else if (ServerLoggerHelper) {
+            return new ServerLoggerHelper();
+        }
+        else {
+            throw new Error('Server logger implementation not found');
+        }
     },
 });
 tsyringe_1.container.register(common_1.BindingKeys.NEXT_DATA_PROVIDER_HANDLER, {
