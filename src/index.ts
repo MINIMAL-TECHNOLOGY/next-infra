@@ -1,5 +1,5 @@
 import '@abraham/reflection';
-import { applicationLogger } from '@/helpers/server-logger.helper';
+import { ServerLogger } from '@/helpers/server-logger.helper';
 import { container } from 'tsyringe';
 import { BindingKeys, DataProviders } from '@/common';
 import { getError } from '@/utilities';
@@ -11,6 +11,8 @@ const {
   APP_ENV_DATA_PROVIDER_IDENTIFIER = DataProviders.BASE,
   APP_ENV_APPLICATION_NAME = 'NextJS Infrastructure',
 } = process.env;
+
+const applicationLogger = new ServerLogger();
 
 applicationLogger.info('------------------------------------');
 applicationLogger.info('Application configures:');
