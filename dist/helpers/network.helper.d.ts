@@ -1,5 +1,4 @@
 import { type TAnyObject, type TRequestMethod } from '../common';
-import { type IBaseLogger } from '../helpers';
 interface IRequestOptions {
     url: string;
     method?: TRequestMethod;
@@ -8,12 +7,6 @@ interface IRequestOptions {
     configs?: object;
 }
 export declare class NetworkHelper {
-    private readonly logger;
-    private readonly name;
-    constructor(logger: IBaseLogger, opts: {
-        name: string;
-        scopes?: string[];
-    });
     getProtocol(url: string): "http" | "https";
     send(opts: IRequestOptions): Promise<Response>;
     get(opts: IRequestOptions): Promise<Response>;

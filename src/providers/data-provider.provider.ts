@@ -1,7 +1,5 @@
 import { BindingKeys, DataProviders } from '@/common';
-import { NetworkHelper, type IBaseLogger } from '@/helpers';
-import { ClientLogger } from '@/helpers/client-logger.helper';
-import { ServerLogger } from '@/helpers/server-logger.helper';
+import { NetworkHelper } from '@/helpers';
 import {
   BaseDataProviderService,
   BaseResponseHandlerService,
@@ -14,24 +12,9 @@ import { getError } from '@/utilities';
 import { container, instanceCachingFactory } from 'tsyringe';
 
 container.register(BindingKeys.NETWORK_HELPER_FACTORY, {
-  useFactory: instanceCachingFactory<NetworkHelper>(c => {
-    const loggerInstance = c.resolve<IBaseLogger>(BindingKeys.LOGGER_INSTANCE);
-
-    return new NetworkHelper(loggerInstance, {
-      name: typeof window !== 'undefined' ? 'CLIENT_SIDE_NETWORK_SERVICE' : 'SERVER_SIDE_NETWORK_SERVICE',
-    });
+  useFactory: instanceCachingFactory<NetworkHelper>(() => {
+    return new NetworkHelper();
   }),
-});
-
-container.register(BindingKeys.LOGGER_INSTANCE, {
-  useFactory: (): IBaseLogger => {
-    const isClient = typeof window !== 'undefined';
-    if (isClient) {
-      return ClientLogger.getInstance();
-    } else {
-      return new ServerLogger();
-    }
-  },
 });
 
 container.register(BindingKeys.NEXT_DATA_PROVIDER_HANDLER, {

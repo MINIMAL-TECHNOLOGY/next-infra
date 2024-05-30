@@ -16,12 +16,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -71,18 +65,13 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NetworkHelper = void 0;
-var common_1 = require("../common");
 var utilities_1 = require("../utilities");
 var tsyringe_1 = require("tsyringe");
 var HTTP = 'http';
 var HTTPS = 'https';
 // -------------------------------------------------------------
 var NetworkHelper = /** @class */ (function () {
-    function NetworkHelper(logger, opts) {
-        this.logger = logger;
-        var name = opts.name;
-        this.name = name;
-        this.logger.info(' Creating new network request worker instance! Name: %s', this.name);
+    function NetworkHelper() {
     }
     NetworkHelper.prototype.getProtocol = function (url) {
         return url.startsWith('http:') ? HTTP : HTTPS;
@@ -92,22 +81,19 @@ var NetworkHelper = /** @class */ (function () {
     // -------------------------------------------------------------
     NetworkHelper.prototype.send = function (opts) {
         return __awaiter(this, void 0, void 0, function () {
-            var t, url, _a, method, params, body, configs, props, requestUrl, response;
+            var url, _a, method, params, body, configs, props, requestUrl, response;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        t = new Date().getTime();
                         url = opts.url, _a = opts.method, method = _a === void 0 ? 'GET' : _a, params = opts.params, body = opts.body, configs = opts.configs;
                         props = __assign({ method: method, body: JSON.stringify(body) }, configs);
                         requestUrl = url;
                         if (params) {
                             requestUrl = "".concat(url, "?").concat((0, utilities_1.stringify)(params));
                         }
-                        this.logger.info('[send] URL: %s | Props: %o', requestUrl, props);
                         return [4 /*yield*/, fetch(requestUrl, props)];
                     case 1:
                         response = _b.sent();
-                        this.logger.info("[network]][send] Took: %s(ms)", new Date().getTime() - t);
                         return [2 /*return*/, response];
                 }
             });
@@ -198,9 +184,7 @@ var NetworkHelper = /** @class */ (function () {
         });
     };
     NetworkHelper = __decorate([
-        (0, tsyringe_1.injectable)(),
-        __param(0, (0, tsyringe_1.inject)(common_1.BindingKeys.LOGGER_INSTANCE)),
-        __metadata("design:paramtypes", [Object, Object])
+        (0, tsyringe_1.injectable)()
     ], NetworkHelper);
     return NetworkHelper;
 }());

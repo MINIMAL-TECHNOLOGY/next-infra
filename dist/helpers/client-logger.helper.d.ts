@@ -1,9 +1,7 @@
 import { type IBaseLogger } from '../helpers';
 export declare class ClientLogger implements IBaseLogger {
     private scopes;
-    private static instance;
     withScope(scope: string): this;
-    static getInstance(): ClientLogger;
     getTimestamp(): string;
     generateLog(opts: {
         level: 'INFO' | 'DEBUG' | 'ERROR';

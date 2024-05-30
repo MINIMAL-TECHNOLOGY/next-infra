@@ -16,4 +16,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./network.helper"), exports);
 __exportStar(require("./logger.helper"), exports);
+__exportStar(require("./client-logger.helper"), exports);
+__exportStar(require("./server-logger.helper"), exports);
 //# sourceMappingURL=index.js.map

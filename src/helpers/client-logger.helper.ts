@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { type IBaseLogger } from '@/helpers';
 import { getError } from '@/utilities';
+import { container, singleton } from 'tsyringe';
 
 const applicationLogger = console;
 
+@singleton()
 export class ClientLogger implements IBaseLogger {
   private scopes: string[] = [];
-  private static instance: ClientLogger;
 
   withScope(scope: string) {
     if (this.scopes.length < 2) {
@@ -20,14 +21,6 @@ export class ClientLogger implements IBaseLogger {
 
     this.scopes[1] = scope;
     return this;
-  }
-
-  static getInstance(): ClientLogger {
-    if (!this.instance) {
-      this.instance = new ClientLogger();
-    }
-
-    return this.instance;
   }
 
   getTimestamp() {
@@ -64,3 +57,5 @@ export class ClientLogger implements IBaseLogger {
     applicationLogger.error(this.generateLog({ level: 'ERROR', message }), ...args);
   }
 }
+
+container.register(ClientLogger.name, { useClass: ClientLogger });

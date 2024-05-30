@@ -10,7 +10,6 @@ var BindingKeys = /** @class */ (function () {
     BindingKeys.DATA_PROVIDER_IDENTIFIER = '@next/infra/data_provider_identifier';
     BindingKeys.NEXT_DATA_PROVIDER = '@next/infra/next_data_provider';
     BindingKeys.NEXT_DATA_PROVIDER_HANDLER = '@next/infra/next_data_provider_handler';
-    BindingKeys.LOGGER_INSTANCE = '@next/infra/logger_instance';
     return BindingKeys;
 }());
 exports.BindingKeys = BindingKeys;

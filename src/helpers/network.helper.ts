@@ -1,7 +1,6 @@
-import { BindingKeys, type TAnyObject, type TRequestMethod } from '@/common';
-import { type IBaseLogger } from '@/helpers';
+import { type TAnyObject, type TRequestMethod } from '@/common';
 import { stringify } from '@/utilities';
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 
 const HTTP = 'http';
 const HTTPS = 'https';
@@ -17,18 +16,6 @@ interface IRequestOptions {
 // -------------------------------------------------------------
 @injectable()
 export class NetworkHelper {
-  private readonly name: string;
-
-  constructor(
-    @inject(BindingKeys.LOGGER_INSTANCE) private readonly logger: IBaseLogger,
-    opts: { name: string; scopes?: string[] },
-  ) {
-    const { name } = opts;
-    this.name = name;
-
-    this.logger.info(' Creating new network request worker instance! Name: %s', this.name);
-  }
-
   getProtocol(url: string) {
     return url.startsWith('http:') ? HTTP : HTTPS;
   }
@@ -37,8 +24,6 @@ export class NetworkHelper {
   // SEND REQUEST
   // -------------------------------------------------------------
   async send(opts: IRequestOptions) {
-    const t = new Date().getTime();
-
     const { url, method = 'GET', params, body, configs } = opts;
     const props = {
       method,
@@ -51,10 +36,8 @@ export class NetworkHelper {
       requestUrl = `${url}?${stringify(params)}`;
     }
 
-    this.logger.info('[send] URL: %s | Props: %o', requestUrl, props);
     const response = await fetch(requestUrl, props);
 
-    this.logger.info(`[network]][send] Took: %s(ms)`, new Date().getTime() - t);
     return response;
   }
 

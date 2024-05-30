@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
@@ -11,6 +17,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientLogger = void 0;
 var utilities_1 = require("../utilities");
+var tsyringe_1 = require("tsyringe");
 var applicationLogger = console;
 var ClientLogger = /** @class */ (function () {
     function ClientLogger() {
@@ -26,12 +33,6 @@ var ClientLogger = /** @class */ (function () {
         }
         this.scopes[1] = scope;
         return this;
-    };
-    ClientLogger.getInstance = function () {
-        if (!this.instance) {
-            this.instance = new ClientLogger();
-        }
-        return this.instance;
     };
     ClientLogger.prototype.getTimestamp = function () {
         return new Date().toISOString();
@@ -71,7 +72,11 @@ var ClientLogger = /** @class */ (function () {
         }
         applicationLogger.error.apply(applicationLogger, __spreadArray([this.generateLog({ level: 'ERROR', message: message })], args, false));
     };
+    ClientLogger = __decorate([
+        (0, tsyringe_1.singleton)()
+    ], ClientLogger);
     return ClientLogger;
 }());
 exports.ClientLogger = ClientLogger;
+tsyringe_1.container.register(ClientLogger.name, { useClass: ClientLogger });
 //# sourceMappingURL=client-logger.helper.js.map
