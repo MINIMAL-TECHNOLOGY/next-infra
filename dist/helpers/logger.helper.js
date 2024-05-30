@@ -13,12 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoggerFactory = exports.ApplicationLogger = exports.applicationLogger = exports.applicationLogFormatter = void 0;
+exports.LoggerFactory = exports.ClientLogger = exports.ApplicationLogger = exports.applicationLogger = exports.applicationLogFormatter = void 0;
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 var path_1 = __importDefault(require("path"));
 var winston_1 = require("winston");
 require("winston-daily-rotate-file");
 var isEmpty_1 = __importDefault(require("lodash/isEmpty"));
+var utilities_1 = require("../utilities");
 var LOGGER_FOLDER_PATH = (_a = process.env.APP_ENV_LOGGER_FOLDER_PATH) !== null && _a !== void 0 ? _a : './app_data/logs';
 var LOG_ENVIRONMENTS = new Set(['development', 'alpha', 'beta', 'staging']);
 var LOGGER_PREFIX = (_b = process.env.APP_ENV_APPLICATION_NAME) !== null && _b !== void 0 ? _b : 'next-infra';
@@ -119,11 +120,73 @@ var ApplicationLogger = /** @class */ (function () {
     return ApplicationLogger;
 }());
 exports.ApplicationLogger = ApplicationLogger;
+var ClientLogger = /** @class */ (function () {
+    function ClientLogger() {
+        this.scopes = [];
+    }
+    ClientLogger.prototype.withScope = function (scope) {
+        if (this.scopes.length < 2) {
+            this.scopes.push(scope);
+            return this;
+        }
+        while (this.scopes.length > 2) {
+            this.scopes.pop();
+        }
+        this.scopes[1] = scope;
+        return this;
+    };
+    ClientLogger.getInstance = function () {
+        if (!this.instance) {
+            this.instance = new ClientLogger();
+        }
+        return this.instance;
+    };
+    ClientLogger.prototype.getTimestamp = function () {
+        return new Date().toISOString();
+    };
+    ClientLogger.prototype.generateLog = function (opts) {
+        var level = opts.level, message = opts.message;
+        var timestamp = this.getTimestamp();
+        return "".concat(timestamp, " - [").concat(level, "]\t ").concat(message);
+    };
+    ClientLogger.prototype.info = function (message) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        if (!exports.applicationLogger) {
+            throw (0, utilities_1.getError)({ message: '[info] Invalid logger instance!' });
+        }
+        exports.applicationLogger.info.apply(exports.applicationLogger, __spreadArray([this.generateLog({ level: 'INFO', message: message })], args, false));
+    };
+    ClientLogger.prototype.debug = function (message) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        if (!exports.applicationLogger) {
+            throw (0, utilities_1.getError)({ message: '[debug] Invalid logger instance!' });
+        }
+        exports.applicationLogger.debug.apply(exports.applicationLogger, __spreadArray([this.generateLog({ level: 'DEBUG', message: message })], args, false));
+    };
+    ClientLogger.prototype.error = function (message) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        if (!exports.applicationLogger) {
+            throw (0, utilities_1.getError)({ message: '[error] Invalid logger instance!' });
+        }
+        exports.applicationLogger.error.apply(exports.applicationLogger, __spreadArray([this.generateLog({ level: 'ERROR', message: message })], args, false));
+    };
+    return ClientLogger;
+}());
+exports.ClientLogger = ClientLogger;
 var LoggerFactory = /** @class */ (function () {
     function LoggerFactory() {
     }
-    LoggerFactory.getLogger = function (scopes) {
-        var logger = new ApplicationLogger();
+    LoggerFactory.getLogger = function (scopes, isClient) {
+        var logger = isClient ? ClientLogger.getInstance() : new ApplicationLogger();
         logger.withScope(scopes.join('-'));
         return logger;
     };

@@ -3,6 +3,7 @@ import path from 'path';
 import { transports, format, createLogger, type Logform } from 'winston';
 import 'winston-daily-rotate-file';
 import isEmpty from 'lodash/isEmpty';
+import { getError } from '@/utilities';
 
 const LOGGER_FOLDER_PATH = process.env.APP_ENV_LOGGER_FOLDER_PATH ?? './app_data/logs';
 const LOG_ENVIRONMENTS = new Set(['development', 'alpha', 'beta', 'staging']);
@@ -47,7 +48,14 @@ export const applicationLogger = createLogger({
   exceptionHandlers: [consoleLogTransport, errorLogTransport],
 });
 
-export class ApplicationLogger {
+export interface IBaseLogger {
+  withScope: (scope: string) => IBaseLogger;
+  debug: (message: string, ...args: any[]) => void;
+  info: (message: string, ...args: any[]) => void;
+  error: (message: string, ...args: any[]) => void;
+}
+
+export class ApplicationLogger implements IBaseLogger {
   private scopes: string[] = [];
   readonly _environment: string | undefined;
 
@@ -117,9 +125,70 @@ export class ApplicationLogger {
   }
 }
 
+export class ClientLogger implements IBaseLogger {
+  private scopes: string[] = [];
+  private static instance: ClientLogger;
+
+  withScope(scope: string) {
+    if (this.scopes.length < 2) {
+      this.scopes.push(scope);
+      return this;
+    }
+
+    while (this.scopes.length > 2) {
+      this.scopes.pop();
+    }
+
+    this.scopes[1] = scope;
+    return this;
+  }
+
+  static getInstance(): ClientLogger {
+    if (!this.instance) {
+      this.instance = new ClientLogger();
+    }
+
+    return this.instance;
+  }
+
+  getTimestamp() {
+    return new Date().toISOString();
+  }
+
+  generateLog(opts: { level: 'INFO' | 'DEBUG' | 'ERROR'; message: string }) {
+    const { level, message } = opts;
+    const timestamp = this.getTimestamp();
+    return `${timestamp} - [${level}]\t ${message}`;
+  }
+
+  info(message: string, ...args: any[]) {
+    if (!applicationLogger) {
+      throw getError({ message: '[info] Invalid logger instance!' });
+    }
+
+    applicationLogger.info(this.generateLog({ level: 'INFO', message }), ...args);
+  }
+
+  debug(message: string, ...args: any[]) {
+    if (!applicationLogger) {
+      throw getError({ message: '[debug] Invalid logger instance!' });
+    }
+
+    applicationLogger.debug(this.generateLog({ level: 'DEBUG', message }), ...args);
+  }
+
+  error(message: string, ...args: any[]) {
+    if (!applicationLogger) {
+      throw getError({ message: '[error] Invalid logger instance!' });
+    }
+
+    applicationLogger.error(this.generateLog({ level: 'ERROR', message }), ...args);
+  }
+}
+
 export class LoggerFactory {
-  static getLogger(scopes: string[]): ApplicationLogger {
-    const logger = new ApplicationLogger();
+  static getLogger(scopes: string[], isClient?: boolean): ApplicationLogger | ClientLogger {
+    const logger = isClient ? ClientLogger.getInstance() : new ApplicationLogger();
     logger.withScope(scopes.join('-'));
     return logger;
   }

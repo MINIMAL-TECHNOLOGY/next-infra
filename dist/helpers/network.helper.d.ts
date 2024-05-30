@@ -1,5 +1,5 @@
 import type { TAnyObject, TRequestMethod } from '../common';
-import { type ApplicationLogger } from '../helpers';
+import { type IBaseLogger } from '../helpers';
 interface IRequestOptions {
     url: string;
     method?: TRequestMethod;
@@ -9,7 +9,7 @@ interface IRequestOptions {
 }
 export declare class NetworkHelper {
     private readonly name;
-    protected logger: ApplicationLogger;
+    protected logger: IBaseLogger;
     constructor(opts: {
         name: string;
         scopes?: string[];

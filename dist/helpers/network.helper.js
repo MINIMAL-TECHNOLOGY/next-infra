@@ -79,7 +79,7 @@ var NetworkHelper = /** @class */ (function () {
         var _a;
         var name = opts.name;
         this.name = name;
-        this.logger = helpers_1.LoggerFactory.getLogger((_a = opts.scopes) !== null && _a !== void 0 ? _a : [NetworkHelper_1.name]);
+        this.logger = helpers_1.LoggerFactory.getLogger((_a = opts.scopes) !== null && _a !== void 0 ? _a : [NetworkHelper_1.name], typeof window !== 'undefined');
         this.logger.info(' Creating new network request worker instance! Name: %s', this.name);
     }
     NetworkHelper_1 = NetworkHelper;
