@@ -173,7 +173,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
         })
         .then(async response => {
           const responseHandlerService = container.resolve<BaseResponseHandlerService>(
-            BindingKeys.RESPONSE_HANDLER_DATA_PROVIDER,
+            BindingKeys.NEXT_DATA_PROVIDER_HANDLER,
           );
           const normalized = responseHandlerService.convertResponse<T>({ response, type, params });
           resolve(normalized);

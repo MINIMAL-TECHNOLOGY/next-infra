@@ -1,7 +1,7 @@
-import type { TAnyObject, TRequestMethod } from '@/common';
-import { LoggerFactory, type IBaseLogger } from '@/helpers';
+import { BindingKeys, type TAnyObject, type TRequestMethod } from '@/common';
+import { type IBaseLogger } from '@/helpers';
 import { stringify } from '@/utilities';
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 
 const HTTP = 'http';
 const HTTPS = 'https';
@@ -18,12 +18,13 @@ interface IRequestOptions {
 @injectable()
 export class NetworkHelper {
   private readonly name: string;
-  protected logger: IBaseLogger;
 
-  constructor(opts: { name: string; scopes?: string[] }) {
+  constructor(
+    @inject(BindingKeys.LOGGER_INSTANCE) private readonly logger: IBaseLogger,
+    opts: { name: string; scopes?: string[] },
+  ) {
     const { name } = opts;
     this.name = name;
-    this.logger = LoggerFactory.getLogger(opts.scopes ?? [NetworkHelper.name], typeof window !== 'undefined');
 
     this.logger.info(' Creating new network request worker instance! Name: %s', this.name);
   }
