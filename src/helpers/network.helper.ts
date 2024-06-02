@@ -18,14 +18,17 @@ interface IRequestOptions {
 @injectable()
 export class NetworkHelper {
   private readonly name: string;
-  protected logger: ApplicationLogger;
+  protected logger: ApplicationLogger | undefined;
 
   constructor(opts: { name: string; scopes?: string[] }) {
     const { name } = opts;
     this.name = name;
-    this.logger = LoggerFactory.getLogger(opts.scopes ?? [NetworkHelper.name]);
+    void this.initializeLogger(opts.scopes ?? [NetworkHelper.name]);
+  }
 
-    this.logger.info(' Creating new network request worker instance! Name: %s', this.name);
+  private async initializeLogger(scopes: string[]) {
+    this.logger = await LoggerFactory.getLogger(scopes);
+    this.logger.info('Creating new network request worker instance! Name: %s', this.name);
   }
 
   getProtocol(url: string) {
@@ -50,10 +53,10 @@ export class NetworkHelper {
       requestUrl = `${url}?${stringify(params)}`;
     }
 
-    this.logger.info('[send] URL: %s | Props: %o', requestUrl, props);
+    this.logger?.info('[send] URL: %s | Props: %o', requestUrl, props);
     const response = await fetch(requestUrl, props);
 
-    this.logger.info(`[network]][send] Took: %s(ms)`, new Date().getTime() - t);
+    this.logger?.info(`[network]][send] Took: %s(ms)`, new Date().getTime() - t);
     return response;
   }
 

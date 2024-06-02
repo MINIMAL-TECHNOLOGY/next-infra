@@ -79,10 +79,25 @@ var NetworkHelper = /** @class */ (function () {
         var _a;
         var name = opts.name;
         this.name = name;
-        this.logger = helpers_1.LoggerFactory.getLogger((_a = opts.scopes) !== null && _a !== void 0 ? _a : [NetworkHelper_1.name]);
-        this.logger.info(' Creating new network request worker instance! Name: %s', this.name);
+        void this.initializeLogger((_a = opts.scopes) !== null && _a !== void 0 ? _a : [NetworkHelper_1.name]);
     }
     NetworkHelper_1 = NetworkHelper;
+    NetworkHelper.prototype.initializeLogger = function (scopes) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, helpers_1.LoggerFactory.getLogger(scopes)];
+                    case 1:
+                        _a.logger = _b.sent();
+                        this.logger.info('Creating new network request worker instance! Name: %s', this.name);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     NetworkHelper.prototype.getProtocol = function (url) {
         return url.startsWith('http:') ? HTTP : HTTPS;
     };
@@ -92,8 +107,9 @@ var NetworkHelper = /** @class */ (function () {
     NetworkHelper.prototype.send = function (opts) {
         return __awaiter(this, void 0, void 0, function () {
             var t, url, _a, method, params, body, configs, props, requestUrl, response;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var _b, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         t = new Date().getTime();
                         url = opts.url, _a = opts.method, method = _a === void 0 ? 'GET' : _a, params = opts.params, body = opts.body, configs = opts.configs;
@@ -102,11 +118,11 @@ var NetworkHelper = /** @class */ (function () {
                         if (params) {
                             requestUrl = "".concat(url, "?").concat((0, utilities_1.stringify)(params));
                         }
-                        this.logger.info('[send] URL: %s | Props: %o', requestUrl, props);
+                        (_b = this.logger) === null || _b === void 0 ? void 0 : _b.info('[send] URL: %s | Props: %o', requestUrl, props);
                         return [4 /*yield*/, fetch(requestUrl, props)];
                     case 1:
-                        response = _b.sent();
-                        this.logger.info("[network]][send] Took: %s(ms)", new Date().getTime() - t);
+                        response = _d.sent();
+                        (_c = this.logger) === null || _c === void 0 ? void 0 : _c.info("[network]][send] Took: %s(ms)", new Date().getTime() - t);
                         return [2 /*return*/, response];
                 }
             });

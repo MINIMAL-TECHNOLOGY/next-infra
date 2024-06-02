@@ -9,11 +9,12 @@ interface IRequestOptions {
 }
 export declare class NetworkHelper {
     private readonly name;
-    protected logger: ApplicationLogger;
+    protected logger: ApplicationLogger | undefined;
     constructor(opts: {
         name: string;
         scopes?: string[];
     });
+    private initializeLogger;
     getProtocol(url: string): "http" | "https";
     send(opts: IRequestOptions): Promise<Response>;
     get(opts: IRequestOptions): Promise<Response>;

@@ -1,5 +1,5 @@
 import '@abraham/reflection';
-import { applicationLogger } from '@/helpers';
+import { LoggerFactory, type ApplicationLogger } from '@/helpers';
 import { container } from 'tsyringe';
 import { BindingKeys, DataProviders } from '@/common';
 import { getError } from '@/utilities';
@@ -12,13 +12,15 @@ const {
   APP_ENV_APPLICATION_NAME = 'NextJS Infrastructure',
 } = process.env;
 
-applicationLogger.info('------------------------------------');
-applicationLogger.info('Application configures:');
-applicationLogger.info('- Env: %s | Run mode: %s', NODE_ENV, RUN_MODE);
-applicationLogger.info('- Name: %s', APP_ENV_APPLICATION_NAME);
-applicationLogger.info('- Data Provider: %s', APP_ENV_DATA_PROVIDER_IDENTIFIER);
-applicationLogger.info('- Send base url: %s', APP_ENV_SEND_BASE_URL ?? 'N/A');
-applicationLogger.info('------------------------------------');
+void LoggerFactory.getLogger(['index']).then(async (applicationLogger: ApplicationLogger) => {
+  applicationLogger.info('------------------------------------');
+  applicationLogger.info('Application configures:');
+  applicationLogger.info('- Env: %s | Run mode: %s', NODE_ENV, RUN_MODE);
+  applicationLogger.info('- Name: %s', APP_ENV_APPLICATION_NAME);
+  applicationLogger.info('- Data Provider: %s', APP_ENV_DATA_PROVIDER_IDENTIFIER);
+  applicationLogger.info('- Send base url: %s', APP_ENV_SEND_BASE_URL ?? 'N/A');
+  applicationLogger.info('------------------------------------');
+});
 
 if (!DataProviders.isValid(APP_ENV_DATA_PROVIDER_IDENTIFIER)) {
   throw getError({ message: 'Invalid data provider' });

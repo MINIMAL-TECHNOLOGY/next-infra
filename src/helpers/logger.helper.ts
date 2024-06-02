@@ -1,58 +1,72 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import path from 'path';
-import { transports, format, createLogger, type Logform } from 'winston';
-import 'winston-daily-rotate-file';
 import isEmpty from 'lodash/isEmpty';
 
 const LOGGER_FOLDER_PATH = process.env.APP_ENV_LOGGER_FOLDER_PATH ?? './app_data/logs';
 const LOG_ENVIRONMENTS = new Set(['development', 'alpha', 'beta', 'staging']);
 const LOGGER_PREFIX = process.env.APP_ENV_APPLICATION_NAME ?? 'next-infra';
 
-const consoleLogTransport = new transports.Console({
-  level: 'debug',
-});
-const infoLogTransport = new transports.DailyRotateFile({
-  frequency: '1h',
-  maxSize: '100m',
-  maxFiles: '5d',
-  datePattern: 'YYYYMMDD_HH',
-  filename: path.join(LOGGER_FOLDER_PATH, `/${LOGGER_PREFIX}-info-%DATE%.log`),
-  level: 'info',
-});
-
-const errorLogTransport = new transports.DailyRotateFile({
-  frequency: '1h',
-  maxSize: '100m',
-  maxFiles: '5d',
-  datePattern: 'YYYYMMDD_HH',
-  filename: path.join(LOGGER_FOLDER_PATH, `/${LOGGER_PREFIX}-error-%DATE%.log`),
-  level: 'error',
-});
-
-export const applicationLogFormatter: Logform.Format = format.combine(
-  format.label({ label: LOGGER_PREFIX }),
-  format.splat(),
-  format.align(),
-  format.timestamp(),
-  format.simple(),
-  format.colorize(),
-  format.printf(({ level, message, label, timestamp }) => `${timestamp} [${label}] ${level}: ${message}`),
-  format.errors({ stack: true }),
-);
-
-export const applicationLogger = createLogger({
-  format: applicationLogFormatter,
-  exitOnError: false,
-  transports: [consoleLogTransport, infoLogTransport, errorLogTransport],
-  exceptionHandlers: [consoleLogTransport, errorLogTransport],
-});
-
 export class ApplicationLogger {
+  private applicationLogger: any;
+
   private scopes: string[] = [];
   readonly _environment: string | undefined;
 
   constructor() {
     this._environment = process.env.NODE_ENV;
+  }
+
+  async initialize() {
+    if (typeof window === 'undefined') {
+      const winston = await import('winston');
+      await import('winston-daily-rotate-file');
+      const transports = {
+        Console: winston.transports.Console,
+        DailyRotateFile: winston.transports.DailyRotateFile,
+      };
+      const format = winston.format;
+
+      const consoleLogTransport = new transports.Console({
+        level: 'debug',
+      });
+      const infoLogTransport = new transports.DailyRotateFile({
+        frequency: '1h',
+        maxSize: '100m',
+        maxFiles: '5d',
+        datePattern: 'YYYYMMDD_HH',
+        filename: `${LOGGER_FOLDER_PATH}/${LOGGER_PREFIX}-info-%DATE%.log`,
+        level: 'info',
+      });
+
+      const errorLogTransport = new transports.DailyRotateFile({
+        frequency: '1h',
+        maxSize: '100m',
+        maxFiles: '5d',
+        datePattern: 'YYYYMMDD_HH',
+        filename: `${LOGGER_FOLDER_PATH}/${LOGGER_PREFIX}-error-%DATE%.log`,
+        level: 'error',
+      });
+
+      const applicationLogFormatter = format.combine(
+        format.label({ label: LOGGER_PREFIX }),
+        format.splat(),
+        format.align(),
+        format.timestamp(),
+        format.simple(),
+        format.colorize(),
+        format.printf(info => {
+          const { level, message, label, timestamp } = info;
+          return `${timestamp} [${label}] ${level}: ${message}`;
+        }),
+        format.errors({ stack: true }),
+      );
+
+      this.applicationLogger = winston.createLogger({
+        format: applicationLogFormatter,
+        exitOnError: false,
+        transports: [consoleLogTransport, infoLogTransport, errorLogTransport],
+        exceptionHandlers: [consoleLogTransport, errorLogTransport],
+      });
+    }
   }
 
   withScope(scope: string) {
@@ -86,8 +100,8 @@ export class ApplicationLogger {
       return;
     }
 
-    if (!applicationLogger) {
-      throw new Error('Invalid logger instance!');
+    if (!this.applicationLogger) {
+      return;
     }
 
     if (!process.env.DEBUG) {
@@ -95,31 +109,32 @@ export class ApplicationLogger {
     }
 
     const enhanced = this._enhanceMessage(this.scopes, message);
-    applicationLogger.log('debug', enhanced, ...args);
+    this.applicationLogger.log('debug', enhanced, ...args);
   }
 
   info(message: string, ...args: any[]) {
-    if (!applicationLogger) {
-      throw new Error('Invalid logger instance!');
+    if (!this.applicationLogger) {
+      return;
     }
 
     const enhanced = this._enhanceMessage(this.scopes, message);
-    applicationLogger.log('info', enhanced, ...args);
+    this.applicationLogger.log('info', enhanced, ...args);
   }
 
   error(message: string, ...args: any[]) {
-    if (!applicationLogger) {
-      throw new Error('Invalid logger instance!');
+    if (!this.applicationLogger) {
+      return;
     }
 
     const enhanced = this._enhanceMessage(this.scopes, message);
-    applicationLogger.log('error', enhanced, ...args);
+    this.applicationLogger.log('error', enhanced, ...args);
   }
 }
 
 export class LoggerFactory {
-  static getLogger(scopes: string[]): ApplicationLogger {
+  static async getLogger(scopes: string[]): Promise<ApplicationLogger> {
     const logger = new ApplicationLogger();
+    await logger.initialize();
     logger.withScope(scopes.join('-'));
     return logger;
   }
