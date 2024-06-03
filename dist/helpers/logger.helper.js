@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -87,52 +64,46 @@ var ApplicationLogger = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var winston, transports, format, consoleLogTransport, infoLogTransport, errorLogTransport, applicationLogFormatter;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!(typeof window === 'undefined')) return [3 /*break*/, 3];
-                        return [4 /*yield*/, Promise.resolve().then(function () { return __importStar(require('winston')); })];
-                    case 1:
-                        winston = _a.sent();
-                        return [4 /*yield*/, Promise.resolve().then(function () { return __importStar(require('winston-daily-rotate-file')); })];
-                    case 2:
-                        _a.sent();
-                        transports = {
-                            Console: winston.transports.Console,
-                            DailyRotateFile: winston.transports.DailyRotateFile,
-                        };
-                        format = winston.format;
-                        consoleLogTransport = new transports.Console({
-                            level: 'debug',
-                        });
-                        infoLogTransport = new transports.DailyRotateFile({
-                            frequency: '1h',
-                            maxSize: '100m',
-                            maxFiles: '5d',
-                            datePattern: 'YYYYMMDD_HH',
-                            filename: "".concat(LOGGER_FOLDER_PATH, "/").concat(LOGGER_PREFIX, "-info-%DATE%.log"),
-                            level: 'info',
-                        });
-                        errorLogTransport = new transports.DailyRotateFile({
-                            frequency: '1h',
-                            maxSize: '100m',
-                            maxFiles: '5d',
-                            datePattern: 'YYYYMMDD_HH',
-                            filename: "".concat(LOGGER_FOLDER_PATH, "/").concat(LOGGER_PREFIX, "-error-%DATE%.log"),
-                            level: 'error',
-                        });
-                        applicationLogFormatter = format.combine(format.label({ label: LOGGER_PREFIX }), format.splat(), format.align(), format.timestamp(), format.simple(), format.colorize(), format.printf(function (info) {
-                            var level = info.level, message = info.message, label = info.label, timestamp = info.timestamp;
-                            return "".concat(timestamp, " [").concat(label, "] ").concat(level, ": ").concat(message);
-                        }), format.errors({ stack: true }));
-                        this.applicationLogger = winston.createLogger({
-                            format: applicationLogFormatter,
-                            exitOnError: false,
-                            transports: [consoleLogTransport, infoLogTransport, errorLogTransport],
-                            exceptionHandlers: [consoleLogTransport, errorLogTransport],
-                        });
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
+                if (typeof window === 'undefined') {
+                    winston = eval("await import('winston')");
+                    // eslint-disable-next-line no-eval
+                    eval("await import('winston-daily-rotate-file')");
+                    transports = {
+                        Console: winston.transports.Console,
+                        DailyRotateFile: winston.transports.DailyRotateFile,
+                    };
+                    format = winston.format;
+                    consoleLogTransport = new transports.Console({
+                        level: 'debug',
+                    });
+                    infoLogTransport = new transports.DailyRotateFile({
+                        frequency: '1h',
+                        maxSize: '100m',
+                        maxFiles: '5d',
+                        datePattern: 'YYYYMMDD_HH',
+                        filename: "".concat(LOGGER_FOLDER_PATH, "/").concat(LOGGER_PREFIX, "-info-%DATE%.log"),
+                        level: 'info',
+                    });
+                    errorLogTransport = new transports.DailyRotateFile({
+                        frequency: '1h',
+                        maxSize: '100m',
+                        maxFiles: '5d',
+                        datePattern: 'YYYYMMDD_HH',
+                        filename: "".concat(LOGGER_FOLDER_PATH, "/").concat(LOGGER_PREFIX, "-error-%DATE%.log"),
+                        level: 'error',
+                    });
+                    applicationLogFormatter = format.combine(format.label({ label: LOGGER_PREFIX }), format.splat(), format.align(), format.timestamp(), format.simple(), format.colorize(), format.printf(function (info) {
+                        var level = info.level, message = info.message, label = info.label, timestamp = info.timestamp;
+                        return "".concat(timestamp, " [").concat(label, "] ").concat(level, ": ").concat(message);
+                    }), format.errors({ stack: true }));
+                    this.applicationLogger = winston.createLogger({
+                        format: applicationLogFormatter,
+                        exitOnError: false,
+                        transports: [consoleLogTransport, infoLogTransport, errorLogTransport],
+                        exceptionHandlers: [consoleLogTransport, errorLogTransport],
+                    });
                 }
+                return [2 /*return*/];
             });
         });
     };

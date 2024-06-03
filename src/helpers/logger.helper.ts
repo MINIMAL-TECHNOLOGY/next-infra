@@ -17,8 +17,10 @@ export class ApplicationLogger {
 
   async initialize() {
     if (typeof window === 'undefined') {
-      const winston = await import('winston');
-      await import('winston-daily-rotate-file');
+      // eslint-disable-next-line no-eval
+      const winston = eval("await import('winston')");
+      // eslint-disable-next-line no-eval
+      eval("await import('winston-daily-rotate-file')");
       const transports = {
         Console: winston.transports.Console,
         DailyRotateFile: winston.transports.DailyRotateFile,
@@ -53,7 +55,7 @@ export class ApplicationLogger {
         format.timestamp(),
         format.simple(),
         format.colorize(),
-        format.printf(info => {
+        format.printf((info: { level: string; message: string; label: string; timestamp: string }) => {
           const { level, message, label, timestamp } = info;
           return `${timestamp} [${label}] ${level}: ${message}`;
         }),
