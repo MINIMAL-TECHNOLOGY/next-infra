@@ -46,7 +46,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
       headers,
       body: null,
       query,
-      cache: cache ?? 'force-cache',
+      cache,
     };
 
     switch (type) {
@@ -146,7 +146,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
           method,
           params: query,
           body: bodyOpts,
-          configs: { headers, cache },
+          configs: { headers, ...(cache && { cache }) },
         })
         .then(async rs => {
           const status = rs.status;
