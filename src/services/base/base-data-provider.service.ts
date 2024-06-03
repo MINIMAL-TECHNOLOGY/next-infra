@@ -46,7 +46,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
       headers,
       body: null,
       query,
-      cache: cache ?? 'default',
+      cache: cache ?? 'force-cache',
     };
 
     switch (type) {
