@@ -76,7 +76,10 @@ var ApplicationLogger = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(typeof window === 'undefined')) return [3 /*break*/, 2];
+                        if (typeof window !== 'undefined') {
+                            this.applicationLogger = console;
+                            return [2 /*return*/];
+                        }
                         return [4 /*yield*/, this.importModules()];
                     case 1:
                         winston = _a.sent();
@@ -114,8 +117,7 @@ var ApplicationLogger = /** @class */ (function () {
                             transports: [consoleLogTransport, infoLogTransport, errorLogTransport],
                             exceptionHandlers: [consoleLogTransport, errorLogTransport],
                         });
-                        _a.label = 2;
-                    case 2: return [2 /*return*/];
+                        return [2 /*return*/];
                 }
             });
         });

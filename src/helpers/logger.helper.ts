@@ -26,57 +26,60 @@ export class ApplicationLogger {
   }
 
   async initialize() {
-    if (typeof window === 'undefined') {
-      const winston = await this.importModules();
-
-      const transports = {
-        Console: winston.transports.Console,
-        DailyRotateFile: winston.transports.DailyRotateFile,
-      };
-      const format = winston.format;
-
-      const consoleLogTransport = new transports.Console({
-        level: 'debug',
-      });
-      const infoLogTransport = new transports.DailyRotateFile({
-        frequency: '1h',
-        maxSize: '100m',
-        maxFiles: '5d',
-        datePattern: 'YYYYMMDD_HH',
-        filename: `${LOGGER_FOLDER_PATH}/${LOGGER_PREFIX}-info-%DATE%.log`,
-        level: 'info',
-      });
-
-      const errorLogTransport = new transports.DailyRotateFile({
-        frequency: '1h',
-        maxSize: '100m',
-        maxFiles: '5d',
-        datePattern: 'YYYYMMDD_HH',
-        filename: `${LOGGER_FOLDER_PATH}/${LOGGER_PREFIX}-error-%DATE%.log`,
-        level: 'error',
-      });
-
-      const applicationLogFormatter = format.combine(
-        format.label({ label: LOGGER_PREFIX }),
-        format.splat(),
-        format.align(),
-        format.timestamp(),
-        format.simple(),
-        format.colorize(),
-        format.printf((info: { level: string; message: string; label: string; timestamp: string }) => {
-          const { level, message, label, timestamp } = info;
-          return `${timestamp} [${label}] ${level}: ${message}`;
-        }),
-        format.errors({ stack: true }),
-      );
-
-      this.applicationLogger = winston.createLogger({
-        format: applicationLogFormatter,
-        exitOnError: false,
-        transports: [consoleLogTransport, infoLogTransport, errorLogTransport],
-        exceptionHandlers: [consoleLogTransport, errorLogTransport],
-      });
+    if (typeof window !== 'undefined') {
+      this.applicationLogger = console;
+      return;
     }
+
+    const winston = await this.importModules();
+
+    const transports = {
+      Console: winston.transports.Console,
+      DailyRotateFile: winston.transports.DailyRotateFile,
+    };
+    const format = winston.format;
+
+    const consoleLogTransport = new transports.Console({
+      level: 'debug',
+    });
+    const infoLogTransport = new transports.DailyRotateFile({
+      frequency: '1h',
+      maxSize: '100m',
+      maxFiles: '5d',
+      datePattern: 'YYYYMMDD_HH',
+      filename: `${LOGGER_FOLDER_PATH}/${LOGGER_PREFIX}-info-%DATE%.log`,
+      level: 'info',
+    });
+
+    const errorLogTransport = new transports.DailyRotateFile({
+      frequency: '1h',
+      maxSize: '100m',
+      maxFiles: '5d',
+      datePattern: 'YYYYMMDD_HH',
+      filename: `${LOGGER_FOLDER_PATH}/${LOGGER_PREFIX}-error-%DATE%.log`,
+      level: 'error',
+    });
+
+    const applicationLogFormatter = format.combine(
+      format.label({ label: LOGGER_PREFIX }),
+      format.splat(),
+      format.align(),
+      format.timestamp(),
+      format.simple(),
+      format.colorize(),
+      format.printf((info: { level: string; message: string; label: string; timestamp: string }) => {
+        const { level, message, label, timestamp } = info;
+        return `${timestamp} [${label}] ${level}: ${message}`;
+      }),
+      format.errors({ stack: true }),
+    );
+
+    this.applicationLogger = winston.createLogger({
+      format: applicationLogFormatter,
+      exitOnError: false,
+      transports: [consoleLogTransport, infoLogTransport, errorLogTransport],
+      exceptionHandlers: [consoleLogTransport, errorLogTransport],
+    });
   }
 
   withScope(scope: string) {
