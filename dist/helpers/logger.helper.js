@@ -84,15 +84,14 @@ var ApplicationLogger = /** @class */ (function () {
                                         args[_i - 2] = arguments[_i];
                                     }
                                     if (typeof message === 'string') {
-                                        var tokens = message.match(/%s/g) || [];
-                                        tokens.forEach(function (token, index) {
-                                            if (args[index] !== undefined) {
-                                                message = message.replace(token, String(args[index]));
-                                            }
-                                        });
+                                        var formattedMessage = message.replace(/%s/g, function () { return args.shift(); });
+                                        var method = console[level] || console.log;
+                                        method(formattedMessage);
                                     }
-                                    var method = console[level] || console.log;
-                                    method(message);
+                                    else {
+                                        var method = console[level] || console.log;
+                                        method.apply(void 0, __spreadArray([message], args, false));
+                                    }
                                 },
                             };
                             return [2 /*return*/];

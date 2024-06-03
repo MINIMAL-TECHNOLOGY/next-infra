@@ -30,16 +30,13 @@ export class ApplicationLogger {
       this.applicationLogger = {
         log: (level: 'log' | 'info' | 'warn' | 'error', message: string, ...args: any[]): void => {
           if (typeof message === 'string') {
-            const tokens = message.match(/%s/g) || [];
-            tokens.forEach((token, index) => {
-              if (args[index] !== undefined) {
-                message = message.replace(token, String(args[index]));
-              }
-            });
+            const formattedMessage = message.replace(/%s/g, () => args.shift());
+            const method = console[level] || console.log;
+            method(formattedMessage);
+          } else {
+            const method = console[level] || console.log;
+            method(message, ...args);
           }
-
-          const method = console[level] || console.log;
-          method(message);
         },
       };
       return;
