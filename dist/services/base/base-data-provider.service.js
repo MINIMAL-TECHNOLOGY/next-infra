@@ -97,7 +97,7 @@ var BaseDataProviderService = /** @class */ (function () {
             headers: headers,
             body: null,
             query: query,
-            cache: cache !== null && cache !== void 0 ? cache : 'default',
+            cache: cache,
         };
         switch (type) {
             case 'form': {
@@ -174,7 +174,7 @@ var BaseDataProviderService = /** @class */ (function () {
                                     method: method,
                                     params: query,
                                     body: bodyOpts,
-                                    configs: { headers: headers, cache: cache },
+                                    configs: __assign({ headers: headers }, (cache && { cache: cache })),
                                 })
                                     .then(function (rs) { return __awaiter(_this, void 0, void 0, function () {
                                     var status;
