@@ -27,26 +27,21 @@ export class ApplicationLogger {
 
   async initialize() {
     if (typeof window !== 'undefined') {
-      (function (originalLog: (...data: any[]) => void) {
-        console.log = function (...data: any[]): void {
-          if (data.length > 1 && typeof data[0] === 'string') {
-            let message = data[0];
+      this.applicationLogger = {
+        log: (level: 'log' | 'info' | 'warn' | 'error', message: string, ...args: any[]): void => {
+          if (typeof message === 'string') {
             const tokens = message.match(/%s/g) || [];
-
             tokens.forEach((token, index) => {
-              if (data[index + 1] !== undefined) {
-                message = message.replace(token, String(data[index + 1]));
+              if (args[index] !== undefined) {
+                message = message.replace(token, String(args[index]));
               }
             });
-
-            originalLog(message);
-          } else {
-            originalLog(...data);
           }
-        };
-      })(console.log);
 
-      this.applicationLogger = console;
+          const method = console[level] || console.log;
+          method(message);
+        },
+      };
       return;
     }
 

@@ -77,28 +77,24 @@ var ApplicationLogger = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (typeof window !== 'undefined') {
-                            (function (originalLog) {
-                                console.log = function () {
-                                    var data = [];
-                                    for (var _i = 0; _i < arguments.length; _i++) {
-                                        data[_i] = arguments[_i];
+                            this.applicationLogger = {
+                                log: function (level, message) {
+                                    var args = [];
+                                    for (var _i = 2; _i < arguments.length; _i++) {
+                                        args[_i - 2] = arguments[_i];
                                     }
-                                    if (data.length > 1 && typeof data[0] === 'string') {
-                                        var message_1 = data[0];
-                                        var tokens = message_1.match(/%s/g) || [];
+                                    if (typeof message === 'string') {
+                                        var tokens = message.match(/%s/g) || [];
                                         tokens.forEach(function (token, index) {
-                                            if (data[index + 1] !== undefined) {
-                                                message_1 = message_1.replace(token, String(data[index + 1]));
+                                            if (args[index] !== undefined) {
+                                                message = message.replace(token, String(args[index]));
                                             }
                                         });
-                                        originalLog(message_1);
                                     }
-                                    else {
-                                        originalLog.apply(void 0, data);
-                                    }
-                                };
-                            })(console.log);
-                            this.applicationLogger = console;
+                                    var method = console[level] || console.log;
+                                    method(message);
+                                },
+                            };
                             return [2 /*return*/];
                         }
                         return [4 /*yield*/, this.importModules()];
