@@ -60,50 +60,63 @@ var ApplicationLogger = /** @class */ (function () {
         this.scopes = [];
         this._environment = process.env.NODE_ENV;
     }
+    ApplicationLogger.prototype.importModules = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var importCode;
+            return __generator(this, function (_a) {
+                importCode = "\n      const winston = await import('winston');\n      await import('winston-daily-rotate-file');\n      return winston;\n    ";
+                // eslint-disable-next-line no-eval
+                return [2 /*return*/, eval("(async () => {".concat(importCode, "})()"))];
+            });
+        });
+    };
     ApplicationLogger.prototype.initialize = function () {
         return __awaiter(this, void 0, void 0, function () {
             var winston, transports, format, consoleLogTransport, infoLogTransport, errorLogTransport, applicationLogFormatter;
             return __generator(this, function (_a) {
-                if (typeof window === 'undefined') {
-                    winston = eval("await import('winston')");
-                    // eslint-disable-next-line no-eval
-                    eval("await import('winston-daily-rotate-file')");
-                    transports = {
-                        Console: winston.transports.Console,
-                        DailyRotateFile: winston.transports.DailyRotateFile,
-                    };
-                    format = winston.format;
-                    consoleLogTransport = new transports.Console({
-                        level: 'debug',
-                    });
-                    infoLogTransport = new transports.DailyRotateFile({
-                        frequency: '1h',
-                        maxSize: '100m',
-                        maxFiles: '5d',
-                        datePattern: 'YYYYMMDD_HH',
-                        filename: "".concat(LOGGER_FOLDER_PATH, "/").concat(LOGGER_PREFIX, "-info-%DATE%.log"),
-                        level: 'info',
-                    });
-                    errorLogTransport = new transports.DailyRotateFile({
-                        frequency: '1h',
-                        maxSize: '100m',
-                        maxFiles: '5d',
-                        datePattern: 'YYYYMMDD_HH',
-                        filename: "".concat(LOGGER_FOLDER_PATH, "/").concat(LOGGER_PREFIX, "-error-%DATE%.log"),
-                        level: 'error',
-                    });
-                    applicationLogFormatter = format.combine(format.label({ label: LOGGER_PREFIX }), format.splat(), format.align(), format.timestamp(), format.simple(), format.colorize(), format.printf(function (info) {
-                        var level = info.level, message = info.message, label = info.label, timestamp = info.timestamp;
-                        return "".concat(timestamp, " [").concat(label, "] ").concat(level, ": ").concat(message);
-                    }), format.errors({ stack: true }));
-                    this.applicationLogger = winston.createLogger({
-                        format: applicationLogFormatter,
-                        exitOnError: false,
-                        transports: [consoleLogTransport, infoLogTransport, errorLogTransport],
-                        exceptionHandlers: [consoleLogTransport, errorLogTransport],
-                    });
+                switch (_a.label) {
+                    case 0:
+                        if (!(typeof window === 'undefined')) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.importModules()];
+                    case 1:
+                        winston = _a.sent();
+                        transports = {
+                            Console: winston.transports.Console,
+                            DailyRotateFile: winston.transports.DailyRotateFile,
+                        };
+                        format = winston.format;
+                        consoleLogTransport = new transports.Console({
+                            level: 'debug',
+                        });
+                        infoLogTransport = new transports.DailyRotateFile({
+                            frequency: '1h',
+                            maxSize: '100m',
+                            maxFiles: '5d',
+                            datePattern: 'YYYYMMDD_HH',
+                            filename: "".concat(LOGGER_FOLDER_PATH, "/").concat(LOGGER_PREFIX, "-info-%DATE%.log"),
+                            level: 'info',
+                        });
+                        errorLogTransport = new transports.DailyRotateFile({
+                            frequency: '1h',
+                            maxSize: '100m',
+                            maxFiles: '5d',
+                            datePattern: 'YYYYMMDD_HH',
+                            filename: "".concat(LOGGER_FOLDER_PATH, "/").concat(LOGGER_PREFIX, "-error-%DATE%.log"),
+                            level: 'error',
+                        });
+                        applicationLogFormatter = format.combine(format.label({ label: LOGGER_PREFIX }), format.splat(), format.align(), format.timestamp(), format.simple(), format.colorize(), format.printf(function (info) {
+                            var level = info.level, message = info.message, label = info.label, timestamp = info.timestamp;
+                            return "".concat(timestamp, " [").concat(label, "] ").concat(level, ": ").concat(message);
+                        }), format.errors({ stack: true }));
+                        this.applicationLogger = winston.createLogger({
+                            format: applicationLogFormatter,
+                            exitOnError: false,
+                            transports: [consoleLogTransport, infoLogTransport, errorLogTransport],
+                            exceptionHandlers: [consoleLogTransport, errorLogTransport],
+                        });
+                        _a.label = 2;
+                    case 2: return [2 /*return*/];
                 }
-                return [2 /*return*/];
             });
         });
     };

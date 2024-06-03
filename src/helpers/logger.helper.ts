@@ -15,12 +15,20 @@ export class ApplicationLogger {
     this._environment = process.env.NODE_ENV;
   }
 
+  private async importModules() {
+    const importCode = `
+      const winston = await import('winston');
+      await import('winston-daily-rotate-file');
+      return winston;
+    `;
+    // eslint-disable-next-line no-eval
+    return eval(`(async () => {${importCode}})()`);
+  }
+
   async initialize() {
     if (typeof window === 'undefined') {
-      // eslint-disable-next-line no-eval
-      const winston = eval("await import('winston')");
-      // eslint-disable-next-line no-eval
-      eval("await import('winston-daily-rotate-file')");
+      const winston = await this.importModules();
+
       const transports = {
         Console: winston.transports.Console,
         DailyRotateFile: winston.transports.DailyRotateFile,

@@ -3,6 +3,7 @@ export declare class ApplicationLogger {
     private scopes;
     readonly _environment: string | undefined;
     constructor();
+    private importModules;
     initialize(): Promise<void>;
     withScope(scope: string): this;
     private _enhanceMessage;
