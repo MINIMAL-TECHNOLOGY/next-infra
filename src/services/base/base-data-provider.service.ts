@@ -1,5 +1,5 @@
 import { BindingKeys, RequestTypes } from '@/common';
-import type { IParam, IRequestProps, TAnyObject, TRequestMethod } from '@/common/types';
+import type { IParam, IRequestProps, TRequestMethod } from '@/common/types';
 import { NetworkHelper } from '@/helpers';
 import { type BaseResponseHandlerService } from '@/services';
 import { getError, isEmpty } from '@/utilities';
@@ -40,12 +40,13 @@ export class BaseDataProviderService implements IBaseRestRequestService {
   // GET_REQUEST_PROPS
   // -------------------------------------------------------------
   getRequestProps(params: IParam): IRequestProps {
-    const { bodyType: type, body, file, query, headers = {}, data } = params;
+    const { bodyType: type, body, file, query, headers = {}, data, cache } = params;
 
     const rs: IRequestProps = {
       headers,
       body: null,
       query,
+      cache: cache ?? 'default',
     };
 
     switch (type) {
@@ -127,7 +128,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
       params?: Record<string, any>;
     },
   ): Promise<T> {
-    const { type, baseUrl = this.baseUrl, method, paths, body, headers, query, params } = opts;
+    const { type, baseUrl = this.baseUrl, method, paths, body, headers, cache, query, params } = opts;
 
     if (!baseUrl || isEmpty(baseUrl)) {
       throw getError({ message: '[doRequest] Invalid baseUrl to send request!' });
@@ -145,7 +146,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
           method,
           params: query,
           body: bodyOpts,
-          configs: { headers },
+          configs: { headers, cache },
         })
         .then(async rs => {
           const status = rs.status;
@@ -195,7 +196,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
     }
 
     const { method, ...rest } = opts.params;
-    const request: TAnyObject = this.getRequestProps(rest);
+    const request = this.getRequestProps(rest);
     const paths = [opts.resource];
 
     const response = await this.doRequest<T>({

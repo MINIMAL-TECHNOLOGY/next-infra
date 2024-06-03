@@ -92,11 +92,12 @@ var BaseDataProviderService = /** @class */ (function () {
     // -------------------------------------------------------------
     BaseDataProviderService.prototype.getRequestProps = function (params) {
         var _a;
-        var type = params.bodyType, body = params.body, file = params.file, query = params.query, _b = params.headers, headers = _b === void 0 ? {} : _b, data = params.data;
+        var type = params.bodyType, body = params.body, file = params.file, query = params.query, _b = params.headers, headers = _b === void 0 ? {} : _b, data = params.data, cache = params.cache;
         var rs = {
             headers: headers,
             body: null,
             query: query,
+            cache: cache !== null && cache !== void 0 ? cache : 'default',
         };
         switch (type) {
             case 'form': {
@@ -155,12 +156,12 @@ var BaseDataProviderService = /** @class */ (function () {
     // -------------------------------------------------------------
     BaseDataProviderService.prototype.doRequest = function (opts) {
         return __awaiter(this, void 0, void 0, function () {
-            var type, _a, baseUrl, method, paths, body, headers, query, params, url, bodyOpts;
+            var type, _a, baseUrl, method, paths, body, headers, cache, query, params, url, bodyOpts;
             var _this = this;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        type = opts.type, _a = opts.baseUrl, baseUrl = _a === void 0 ? this.baseUrl : _a, method = opts.method, paths = opts.paths, body = opts.body, headers = opts.headers, query = opts.query, params = opts.params;
+                        type = opts.type, _a = opts.baseUrl, baseUrl = _a === void 0 ? this.baseUrl : _a, method = opts.method, paths = opts.paths, body = opts.body, headers = opts.headers, cache = opts.cache, query = opts.query, params = opts.params;
                         if (!baseUrl || (0, utilities_1.isEmpty)(baseUrl)) {
                             throw (0, utilities_1.getError)({ message: '[doRequest] Invalid baseUrl to send request!' });
                         }
@@ -173,7 +174,7 @@ var BaseDataProviderService = /** @class */ (function () {
                                     method: method,
                                     params: query,
                                     body: bodyOpts,
-                                    configs: { headers: headers },
+                                    configs: { headers: headers, cache: cache },
                                 })
                                     .then(function (rs) { return __awaiter(_this, void 0, void 0, function () {
                                     var status;

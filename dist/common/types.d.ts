@@ -5,6 +5,7 @@ export interface IRequestProps {
     headers?: Record<string, string | number>;
     body?: TAnyObject | null;
     query?: TAnyObject;
+    cache?: RequestCache;
 }
 export interface IParam {
     id?: string | number;
@@ -16,4 +17,5 @@ export interface IParam {
     headers?: Record<string, string | number>;
     ids?: string[] | number[];
     data?: TAnyObject;
+    cache?: RequestCache;
 }
