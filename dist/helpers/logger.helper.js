@@ -84,7 +84,28 @@ var ApplicationLogger = /** @class */ (function () {
                                         args[_i - 2] = arguments[_i];
                                     }
                                     if (typeof message === 'string') {
-                                        var formattedMessage = message.replace(/%s/g, function () { return args.shift(); });
+                                        var formattedMessage = message
+                                            .replace(/%[sd]/g, function (match) {
+                                            if (args.length === 0) {
+                                                return match;
+                                            }
+                                            var arg = args.shift();
+                                            switch (match) {
+                                                case '%s':
+                                                    return String(arg);
+                                                case '%d':
+                                                    return String(Number(arg));
+                                                default:
+                                                    return match;
+                                            }
+                                        })
+                                            .replace(/%o/g, function () {
+                                            if (args.length === 0) {
+                                                return '%o';
+                                            }
+                                            var arg = args.shift();
+                                            return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
+                                        });
                                         var method = console[level] || console.log;
                                         method(formattedMessage);
                                     }

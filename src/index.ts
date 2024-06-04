@@ -13,7 +13,7 @@ const {
 } = process.env;
 
 if (typeof window === 'undefined') {
-  void LoggerFactory.getLogger([]).then(async (applicationLogger: ApplicationLogger) => {
+  void LoggerFactory.getLogger(['next-server']).then(async (applicationLogger: ApplicationLogger) => {
     applicationLogger.info('------------------------------------');
     applicationLogger.info('Application configures:');
     applicationLogger.info('- Env: %s | Run mode: %s', NODE_ENV, RUN_MODE);

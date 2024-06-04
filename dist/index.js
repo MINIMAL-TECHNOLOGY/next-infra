@@ -57,7 +57,7 @@ var common_1 = require("./common");
 var utilities_1 = require("./utilities");
 var _a = process.env, NODE_ENV = _a.NODE_ENV, RUN_MODE = _a.RUN_MODE, NEXT_PUBLIC_APP_ENV_SEND_BASE_URL = _a.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL, _b = _a.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME, NEXT_PUBLIC_APP_ENV_APPLICATION_NAME = _b === void 0 ? 'NextJS Infrastructure' : _b, _c = _a.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER, NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER = _c === void 0 ? common_1.DataProviders.BASE : _c;
 if (typeof window === 'undefined') {
-    void helpers_1.LoggerFactory.getLogger([]).then(function (applicationLogger) { return __awaiter(void 0, void 0, void 0, function () {
+    void helpers_1.LoggerFactory.getLogger(['next-server']).then(function (applicationLogger) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             applicationLogger.info('------------------------------------');
             applicationLogger.info('Application configures:');

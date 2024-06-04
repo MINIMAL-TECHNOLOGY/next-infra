@@ -29,7 +29,29 @@ export class ApplicationLogger {
       this.applicationLogger = {
         log: (level: 'log' | 'info' | 'warn' | 'error', message: string, ...args: any[]): void => {
           if (typeof message === 'string') {
-            const formattedMessage = message.replace(/%s/g, () => args.shift());
+            const formattedMessage = message
+              .replace(/%[sd]/g, match => {
+                if (args.length === 0) {
+                  return match;
+                }
+                const arg = args.shift();
+                switch (match) {
+                  case '%s':
+                    return String(arg);
+                  case '%d':
+                    return String(Number(arg));
+                  default:
+                    return match;
+                }
+              })
+              .replace(/%o/g, () => {
+                if (args.length === 0) {
+                  return '%o';
+                }
+                const arg = args.shift();
+                return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
+              });
+
             const method = console[level] || console.log;
             method(formattedMessage);
           } else {
