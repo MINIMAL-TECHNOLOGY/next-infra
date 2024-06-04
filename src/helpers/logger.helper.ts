@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import isEmpty from 'lodash/isEmpty';
 
-const LOGGER_FOLDER_PATH = process.env.APP_ENV_LOGGER_FOLDER_PATH ?? './app_data/logs';
 const LOG_ENVIRONMENTS = new Set(['development', 'alpha', 'beta', 'staging']);
-const LOGGER_PREFIX = process.env.APP_ENV_APPLICATION_NAME ?? 'next-infra';
+const LOGGER_PREFIX = process.env.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME ?? 'next-infra';
 
 export class ApplicationLogger {
   private applicationLogger: any;
@@ -49,6 +48,8 @@ export class ApplicationLogger {
       DailyRotateFile: winston.transports.DailyRotateFile,
     };
     const format = winston.format;
+
+    const LOGGER_FOLDER_PATH = process.env.APP_ENV_LOGGER_FOLDER_PATH ?? './app_data/logs';
 
     const consoleLogTransport = new transports.Console({
       level: 'debug',

@@ -47,14 +47,13 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a, _b;
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoggerFactory = exports.ApplicationLogger = void 0;
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 var isEmpty_1 = __importDefault(require("lodash/isEmpty"));
-var LOGGER_FOLDER_PATH = (_a = process.env.APP_ENV_LOGGER_FOLDER_PATH) !== null && _a !== void 0 ? _a : './app_data/logs';
 var LOG_ENVIRONMENTS = new Set(['development', 'alpha', 'beta', 'staging']);
-var LOGGER_PREFIX = (_b = process.env.APP_ENV_APPLICATION_NAME) !== null && _b !== void 0 ? _b : 'next-infra';
+var LOGGER_PREFIX = (_a = process.env.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME) !== null && _a !== void 0 ? _a : 'next-infra';
 var ApplicationLogger = /** @class */ (function () {
     function ApplicationLogger() {
         this.scopes = [];
@@ -72,9 +71,10 @@ var ApplicationLogger = /** @class */ (function () {
     };
     ApplicationLogger.prototype.initialize = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var winston, transports, format, consoleLogTransport, infoLogTransport, errorLogTransport, applicationLogFormatter;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var winston, transports, format, LOGGER_FOLDER_PATH, consoleLogTransport, infoLogTransport, errorLogTransport, applicationLogFormatter;
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         if (typeof window !== 'undefined') {
                             this.applicationLogger = {
@@ -98,12 +98,13 @@ var ApplicationLogger = /** @class */ (function () {
                         }
                         return [4 /*yield*/, this.importModules()];
                     case 1:
-                        winston = _a.sent();
+                        winston = _b.sent();
                         transports = {
                             Console: winston.transports.Console,
                             DailyRotateFile: winston.transports.DailyRotateFile,
                         };
                         format = winston.format;
+                        LOGGER_FOLDER_PATH = (_a = process.env.APP_ENV_LOGGER_FOLDER_PATH) !== null && _a !== void 0 ? _a : './app_data/logs';
                         consoleLogTransport = new transports.Console({
                             level: 'debug',
                         });
