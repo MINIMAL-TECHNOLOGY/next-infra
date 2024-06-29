@@ -1,6 +1,6 @@
-import { type IParam } from '../../common';
-import { NetworkHelper } from '../../helpers';
-import { BaseDataProviderService, type IBaseRestRequestService } from '../../services';
+import { type IParam } from '@/common';
+import { NetworkHelper } from '@/helpers';
+import { BaseDataProviderService, type IBaseRestRequestService } from '@/services';
 export interface ILBDataProvider extends IBaseRestRequestService {
     getList: <T>(resource: string, params: Record<string, any>) => Promise<T>;
     getOne: <T>(resource: string, params: Record<string, any>) => Promise<T>;

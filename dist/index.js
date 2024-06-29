@@ -49,22 +49,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 require("@abraham/reflection");
-var helpers_1 = require("./helpers");
+var helpers_1 = require("@/helpers");
 var tsyringe_1 = require("tsyringe");
-var common_1 = require("./common");
-var utilities_1 = require("./utilities");
-var _a = process.env, NODE_ENV = _a.NODE_ENV, RUN_MODE = _a.RUN_MODE, NEXT_PUBLIC_APP_ENV_SEND_BASE_URL = _a.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL, _b = _a.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME, NEXT_PUBLIC_APP_ENV_APPLICATION_NAME = _b === void 0 ? 'NextJS Infrastructure' : _b, _c = _a.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER, NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER = _c === void 0 ? common_1.DataProviders.BASE : _c;
+var common_1 = require("@/common");
+var utilities_1 = require("@/utilities");
+var NEXT_PUBLIC_APP_ENV_SEND_BASE_URL = process.env.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL;
+var NEXT_PUBLIC_APP_ENV_APPLICATION_NAME = (_a = process.env.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME) !== null && _a !== void 0 ? _a : 'NextJS Infrastructure';
+var NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER = (_b = process.env.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER) !== null && _b !== void 0 ? _b : common_1.DataProviders.BASE;
 if (typeof window === 'undefined') {
+    var NODE_ENV_1 = process.env.NODE_ENV;
+    var RUN_MODE_1 = process.env.RUN_MODE;
     void helpers_1.LoggerFactory.getLogger(['next-server']).then(function (applicationLogger) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             applicationLogger.info('------------------------------------');
-            applicationLogger.info('Application configures:');
-            applicationLogger.info('- Env: %s | Run mode: %s', NODE_ENV, RUN_MODE);
-            applicationLogger.info('- Name: %s', NEXT_PUBLIC_APP_ENV_APPLICATION_NAME);
-            applicationLogger.info('- Data Provider: %s', NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER);
-            applicationLogger.info('- Send base url: %s', NEXT_PUBLIC_APP_ENV_SEND_BASE_URL !== null && NEXT_PUBLIC_APP_ENV_SEND_BASE_URL !== void 0 ? NEXT_PUBLIC_APP_ENV_SEND_BASE_URL : 'N/A');
+            applicationLogger.info(' Application configures:');
+            applicationLogger.info(' - Env: %s | Run mode: %s', NODE_ENV_1, RUN_MODE_1);
+            applicationLogger.info(' - Name: %s', NEXT_PUBLIC_APP_ENV_APPLICATION_NAME);
+            applicationLogger.info(' - Data Provider: %s', NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER);
+            applicationLogger.info(' - Send base url: %s', NEXT_PUBLIC_APP_ENV_SEND_BASE_URL !== null && NEXT_PUBLIC_APP_ENV_SEND_BASE_URL !== void 0 ? NEXT_PUBLIC_APP_ENV_SEND_BASE_URL : 'N/A');
             applicationLogger.info('------------------------------------');
             return [2 /*return*/];
         });

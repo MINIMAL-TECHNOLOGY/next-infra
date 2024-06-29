@@ -1,2 +1,10 @@
+node_modules
 dist
-*.json
+build
+release
+
+eslint.config.mjs
+.eslintignore
+.dockerignore
+
+*-lock.yaml

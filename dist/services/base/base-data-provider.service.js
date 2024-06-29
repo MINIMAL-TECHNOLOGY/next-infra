@@ -71,9 +71,9 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseDataProviderService = void 0;
-var common_1 = require("../../common");
-var helpers_1 = require("../../helpers");
-var utilities_1 = require("../../utilities");
+var common_1 = require("@/common");
+var helpers_1 = require("@/helpers");
+var utilities_1 = require("@/utilities");
 var tsyringe_1 = require("tsyringe");
 // -------------------------------------------------------------
 var BaseDataProviderService = /** @class */ (function () {

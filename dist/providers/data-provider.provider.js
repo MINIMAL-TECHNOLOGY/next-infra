@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.container = void 0;
-var common_1 = require("../common");
-var helpers_1 = require("../helpers");
-var services_1 = require("../services");
-var utilities_1 = require("../utilities");
+var common_1 = require("@/common");
+var helpers_1 = require("@/helpers");
+var services_1 = require("@/services");
+var utilities_1 = require("@/utilities");
 var tsyringe_1 = require("tsyringe");
 Object.defineProperty(exports, "container", { enumerable: true, get: function () { return tsyringe_1.container; } });
 tsyringe_1.container.register(common_1.BindingKeys.NETWORK_HELPER_FACTORY, {
     useFactory: (0, tsyringe_1.instanceCachingFactory)(function () {
         return new helpers_1.NetworkHelper({
-            name: 'APPLICATION_NETWORK_SERVICE',
+            name: 'NEXT_INFRA_NETWORK_SERVICE',
         });
     }),
 });

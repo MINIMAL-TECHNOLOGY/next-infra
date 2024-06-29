@@ -1,4 +1,4 @@
-import type { RequestTypes } from '../../common';
+import type { RequestTypes } from '@/common';
 export interface IBaseResponseHandlerService {
     convertResponse: <T>(opts: {
         response: {

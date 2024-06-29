@@ -3,7 +3,9 @@ export declare class ApplicationLogger {
     private scopes;
     readonly _environment: string | undefined;
     constructor();
-    private importModules;
+    private importWinstonModules;
+    private initializeClientLogger;
+    private initializeServerLogger;
     initialize(): Promise<void>;
     withScope(scope: string): this;
     private _enhanceMessage;

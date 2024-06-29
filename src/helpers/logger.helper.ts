@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty, isServerSideRendering } from '@/utilities';
 
 const LOG_ENVIRONMENTS = new Set(['development', 'alpha', 'beta', 'staging']);
 const LOGGER_PREFIX = process.env.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME ?? 'next-infra';
@@ -14,56 +13,52 @@ export class ApplicationLogger {
     this._environment = process.env.NODE_ENV;
   }
 
-  private async importModules() {
-    const importCode = `
-      const winston = await import('winston');
-      await import('winston-daily-rotate-file');
-      return winston;
-    `;
-    // eslint-disable-next-line no-eval
-    return eval(`(async () => {${importCode}})()`);
+  private async importWinstonModules() {
+    const winston = await import(/* webpackIgnore: true */ 'winston');
+    await import(/* webpackIgnore: true */ 'winston-daily-rotate-file');
+    return winston;
   }
 
-  async initialize() {
-    if (typeof window !== 'undefined') {
-      this.applicationLogger = {
-        log: (level: 'log' | 'info' | 'warn' | 'error', message: string, ...args: any[]): void => {
-          if (typeof message === 'string') {
-            const formattedMessage = message
-              .replace(/%[sd]/g, match => {
-                if (args.length === 0) {
+  private initializeClientLogger() {
+    this.applicationLogger = {
+      log: (level: 'log' | 'info' | 'warn' | 'error', message: string, ...args: any[]): void => {
+        if (typeof message === 'string') {
+          const formattedMessage = message
+            .replace(/%[sd]/g, match => {
+              if (args.length === 0) {
+                return match;
+              }
+              const arg = args.shift();
+              switch (match) {
+                case '%s':
+                  return String(arg);
+                case '%d':
+                  return String(Number(arg));
+                default:
                   return match;
-                }
-                const arg = args.shift();
-                switch (match) {
-                  case '%s':
-                    return String(arg);
-                  case '%d':
-                    return String(Number(arg));
-                  default:
-                    return match;
-                }
-              })
-              .replace(/%o/g, () => {
-                if (args.length === 0) {
-                  return '%o';
-                }
-                const arg = args.shift();
-                return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
-              });
+              }
+            })
+            .replace(/%o/g, () => {
+              if (args.length === 0) {
+                return '%o';
+              }
+              const arg = args.shift();
+              return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
+            });
 
-            const method = console[level] || console.log;
-            method(formattedMessage);
-          } else {
-            const method = console[level] || console.log;
-            method(message, ...args);
-          }
-        },
-      };
-      return;
-    }
+          const method = console[level] || console.log;
+          method(formattedMessage);
+        } else {
+          const method = console[level] || console.log;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          method(message, ...args);
+        }
+      },
+    };
+  }
 
-    const winston = await this.importModules();
+  private async initializeServerLogger() {
+    const winston = await this.importWinstonModules();
 
     const transports = {
       Console: winston.transports.Console,
@@ -101,7 +96,7 @@ export class ApplicationLogger {
       format.timestamp(),
       format.simple(),
       format.colorize(),
-      format.printf((info: { level: string; message: string; label: string; timestamp: string }) => {
+      format.printf(info => {
         const { level, message, label, timestamp } = info;
         return `${timestamp} [${label}] ${level}: ${message}`;
       }),
@@ -114,6 +109,15 @@ export class ApplicationLogger {
       transports: [consoleLogTransport, infoLogTransport, errorLogTransport],
       exceptionHandlers: [consoleLogTransport, errorLogTransport],
     });
+  }
+
+  async initialize() {
+    if (isServerSideRendering()) {
+      await this.initializeServerLogger();
+      return;
+    }
+
+    this.initializeClientLogger();
   }
 
   withScope(scope: string) {

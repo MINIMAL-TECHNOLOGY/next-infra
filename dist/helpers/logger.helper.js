@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -44,14 +67,11 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoggerFactory = exports.ApplicationLogger = void 0;
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-var isEmpty_1 = __importDefault(require("lodash/isEmpty"));
+var utilities_1 = require("@/utilities");
 var LOG_ENVIRONMENTS = new Set(['development', 'alpha', 'beta', 'staging']);
 var LOGGER_PREFIX = (_a = process.env.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME) !== null && _a !== void 0 ? _a : 'next-infra';
 var ApplicationLogger = /** @class */ (function () {
@@ -59,65 +79,69 @@ var ApplicationLogger = /** @class */ (function () {
         this.scopes = [];
         this._environment = process.env.NODE_ENV;
     }
-    ApplicationLogger.prototype.importModules = function () {
+    ApplicationLogger.prototype.importWinstonModules = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var importCode;
+            var winston;
             return __generator(this, function (_a) {
-                importCode = "\n      const winston = await import('winston');\n      await import('winston-daily-rotate-file');\n      return winston;\n    ";
-                // eslint-disable-next-line no-eval
-                return [2 /*return*/, eval("(async () => {".concat(importCode, "})()"))];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Promise.resolve().then(function () { return __importStar(require(/* webpackIgnore: true */ 'winston')); })];
+                    case 1:
+                        winston = _a.sent();
+                        return [4 /*yield*/, Promise.resolve().then(function () { return __importStar(require(/* webpackIgnore: true */ 'winston-daily-rotate-file')); })];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/, winston];
+                }
             });
         });
     };
-    ApplicationLogger.prototype.initialize = function () {
+    ApplicationLogger.prototype.initializeClientLogger = function () {
+        this.applicationLogger = {
+            log: function (level, message) {
+                var args = [];
+                for (var _i = 2; _i < arguments.length; _i++) {
+                    args[_i - 2] = arguments[_i];
+                }
+                if (typeof message === 'string') {
+                    var formattedMessage = message
+                        .replace(/%[sd]/g, function (match) {
+                        if (args.length === 0) {
+                            return match;
+                        }
+                        var arg = args.shift();
+                        switch (match) {
+                            case '%s':
+                                return String(arg);
+                            case '%d':
+                                return String(Number(arg));
+                            default:
+                                return match;
+                        }
+                    })
+                        .replace(/%o/g, function () {
+                        if (args.length === 0) {
+                            return '%o';
+                        }
+                        var arg = args.shift();
+                        return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
+                    });
+                    var method = console[level] || console.log;
+                    method(formattedMessage);
+                }
+                else {
+                    var method = console[level] || console.log;
+                    method.apply(void 0, __spreadArray([message], args, false));
+                }
+            },
+        };
+    };
+    ApplicationLogger.prototype.initializeServerLogger = function () {
         return __awaiter(this, void 0, void 0, function () {
             var winston, transports, format, LOGGER_FOLDER_PATH, consoleLogTransport, infoLogTransport, errorLogTransport, applicationLogFormatter;
             var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
-                        if (typeof window !== 'undefined') {
-                            this.applicationLogger = {
-                                log: function (level, message) {
-                                    var args = [];
-                                    for (var _i = 2; _i < arguments.length; _i++) {
-                                        args[_i - 2] = arguments[_i];
-                                    }
-                                    if (typeof message === 'string') {
-                                        var formattedMessage = message
-                                            .replace(/%[sd]/g, function (match) {
-                                            if (args.length === 0) {
-                                                return match;
-                                            }
-                                            var arg = args.shift();
-                                            switch (match) {
-                                                case '%s':
-                                                    return String(arg);
-                                                case '%d':
-                                                    return String(Number(arg));
-                                                default:
-                                                    return match;
-                                            }
-                                        })
-                                            .replace(/%o/g, function () {
-                                            if (args.length === 0) {
-                                                return '%o';
-                                            }
-                                            var arg = args.shift();
-                                            return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
-                                        });
-                                        var method = console[level] || console.log;
-                                        method(formattedMessage);
-                                    }
-                                    else {
-                                        var method = console[level] || console.log;
-                                        method.apply(void 0, __spreadArray([message], args, false));
-                                    }
-                                },
-                            };
-                            return [2 /*return*/];
-                        }
-                        return [4 /*yield*/, this.importModules()];
+                    case 0: return [4 /*yield*/, this.importWinstonModules()];
                     case 1:
                         winston = _b.sent();
                         transports = {
@@ -160,6 +184,23 @@ var ApplicationLogger = /** @class */ (function () {
             });
         });
     };
+    ApplicationLogger.prototype.initialize = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(0, utilities_1.isServerSideRendering)()) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.initializeServerLogger()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                    case 2:
+                        this.initializeClientLogger();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     ApplicationLogger.prototype.withScope = function (scope) {
         if (this.scopes.length < 2) {
             this.scopes.push(scope);
@@ -174,7 +215,7 @@ var ApplicationLogger = /** @class */ (function () {
     ApplicationLogger.prototype._enhanceMessage = function (parts, message) {
         var enhanced = parts === null || parts === void 0 ? void 0 : parts.reduce(function (prevState, current) {
             if (prevState === void 0) { prevState = ''; }
-            if ((0, isEmpty_1.default)(prevState)) {
+            if ((0, utilities_1.isEmpty)(prevState)) {
                 return current;
             }
             return prevState.concat("-".concat(current));

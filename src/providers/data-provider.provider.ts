@@ -14,7 +14,7 @@ import { container, instanceCachingFactory } from 'tsyringe';
 container.register(BindingKeys.NETWORK_HELPER_FACTORY, {
   useFactory: instanceCachingFactory<NetworkHelper>(() => {
     return new NetworkHelper({
-      name: 'APPLICATION_NETWORK_SERVICE',
+      name: 'NEXT_INFRA_NETWORK_SERVICE',
     });
   }),
 });

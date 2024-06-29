@@ -1,4 +1,4 @@
-import { BaseResponseHandlerService, type IBaseResponseHandlerService } from '../../services';
+import { BaseResponseHandlerService, type IBaseResponseHandlerService } from '@/services';
 export interface ILBResponseHandlerService extends IBaseResponseHandlerService {
     handleCreate: <T>(opts: {
         data: any | any[];

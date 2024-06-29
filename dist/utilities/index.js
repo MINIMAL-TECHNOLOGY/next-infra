@@ -17,4 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./url.utility"), exports);
 __exportStar(require("./error.utility"), exports);
 __exportStar(require("./lodash.utility"), exports);
+__exportStar(require("./next.utility"), exports);
 //# sourceMappingURL=index.js.map

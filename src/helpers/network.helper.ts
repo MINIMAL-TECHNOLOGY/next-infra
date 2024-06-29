@@ -56,7 +56,7 @@ export class NetworkHelper {
     this.logger?.info('[send] URL: %s | Props: %o', requestUrl, props);
     const response = await fetch(requestUrl, props);
 
-    this.logger?.info(`[network]][send] Took: %s(ms)`, new Date().getTime() - t);
+    this.logger?.info('[network]][send] Took: %s(ms)', new Date().getTime() - t);
     return response;
   }
 
