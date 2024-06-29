@@ -52,10 +52,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 require("@abraham/reflection");
-var helpers_1 = require("@/helpers");
+var helpers_1 = require("./helpers");
 var tsyringe_1 = require("tsyringe");
-var common_1 = require("@/common");
-var utilities_1 = require("@/utilities");
+var common_1 = require("./common");
+var utilities_1 = require("./utilities");
 var NEXT_PUBLIC_APP_ENV_SEND_BASE_URL = process.env.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL;
 var NEXT_PUBLIC_APP_ENV_APPLICATION_NAME = (_a = process.env.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME) !== null && _a !== void 0 ? _a : 'NextJS Infrastructure';
 var NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER = (_b = process.env.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER) !== null && _b !== void 0 ? _b : common_1.DataProviders.BASE;

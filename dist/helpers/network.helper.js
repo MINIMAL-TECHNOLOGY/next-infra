@@ -68,8 +68,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NetworkHelper = void 0;
-var helpers_1 = require("@/helpers");
-var utilities_1 = require("@/utilities");
+var helpers_1 = require("../helpers");
+var utilities_1 = require("../utilities");
 var tsyringe_1 = require("tsyringe");
 var HTTP = 'http';
 var HTTPS = 'https';
@@ -122,7 +122,7 @@ var NetworkHelper = /** @class */ (function () {
                         return [4 /*yield*/, fetch(requestUrl, props)];
                     case 1:
                         response = _d.sent();
-                        (_c = this.logger) === null || _c === void 0 ? void 0 : _c.info("[network]][send] Took: %s(ms)", new Date().getTime() - t);
+                        (_c = this.logger) === null || _c === void 0 ? void 0 : _c.info('[network]][send] Took: %s(ms)', new Date().getTime() - t);
                         return [2 /*return*/, response];
                 }
             });

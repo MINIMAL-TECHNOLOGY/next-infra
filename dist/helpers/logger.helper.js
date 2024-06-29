@@ -70,8 +70,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoggerFactory = exports.ApplicationLogger = void 0;
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-var utilities_1 = require("@/utilities");
+var utilities_1 = require("../utilities");
 var LOG_ENVIRONMENTS = new Set(['development', 'alpha', 'beta', 'staging']);
 var LOGGER_PREFIX = (_a = process.env.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME) !== null && _a !== void 0 ? _a : 'next-infra';
 var ApplicationLogger = /** @class */ (function () {
@@ -130,6 +129,7 @@ var ApplicationLogger = /** @class */ (function () {
                 }
                 else {
                     var method = console[level] || console.log;
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                     method.apply(void 0, __spreadArray([message], args, false));
                 }
             },
