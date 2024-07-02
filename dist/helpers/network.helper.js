@@ -92,7 +92,7 @@ var NetworkHelper = /** @class */ (function () {
                         return [4 /*yield*/, helpers_1.LoggerFactory.getLogger(scopes)];
                     case 1:
                         _a.logger = _b.sent();
-                        this.logger.info('Creating new network request worker instance! Name: %s', this.name);
+                        this.logger.info('[initializeLogger] Creating new network request worker instance! Name: %s', this.name);
                         return [2 /*return*/];
                 }
             });

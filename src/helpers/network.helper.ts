@@ -28,7 +28,7 @@ export class NetworkHelper {
 
   private async initializeLogger(scopes: string[]) {
     this.logger = await LoggerFactory.getLogger(scopes);
-    this.logger.info('Creating new network request worker instance! Name: %s', this.name);
+    this.logger.info('[initializeLogger] Creating new network request worker instance! Name: %s', this.name);
   }
 
   getProtocol(url: string) {
