@@ -80,7 +80,14 @@ var BaseDataProviderService = /** @class */ (function () {
     function BaseDataProviderService(networkHelper, baseUrl) {
         this.networkHelper = networkHelper;
         this.baseUrl = baseUrl;
+        this.defaultHeaders = {};
     }
+    // -------------------------------------------------------------
+    // SET_DEFAULT_HEADERS
+    // -------------------------------------------------------------
+    BaseDataProviderService.prototype.setDefaultHeaders = function (headers) {
+        this.defaultHeaders = headers;
+    };
     // -------------------------------------------------------------
     // CHANGE_BASE_URL
     // -------------------------------------------------------------
@@ -101,7 +108,7 @@ var BaseDataProviderService = /** @class */ (function () {
         };
         switch (type) {
             case 'form': {
-                rs.headers = __assign(__assign({}, headers), { 'Content-Type': 'application/x-www-form-urlencoded' });
+                rs.headers = __assign(__assign(__assign({}, this.defaultHeaders), headers), { 'Content-Type': 'application/x-www-form-urlencoded' });
                 var formData = new FormData();
                 for (var key in body) {
                     if (!((_a = params.body) === null || _a === void 0 ? void 0 : _a[key])) {

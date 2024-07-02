@@ -6,6 +6,7 @@ import { getError, isEmpty } from '@/utilities';
 import { container, inject, injectable } from 'tsyringe';
 
 export interface IBaseRestRequestService {
+  setDefaultHeaders: (headers: Record<string, any>) => void;
   changeBaseUrl: (baseUrl: string) => void;
   getRequestUrl: (opts: { baseUrl?: string; paths: string[] }) => string;
   getRequestProps: (params: IParam) => IRequestProps;
@@ -24,10 +25,19 @@ export interface IBaseRestRequestService {
 // -------------------------------------------------------------
 @injectable()
 export class BaseDataProviderService implements IBaseRestRequestService {
+  private defaultHeaders: Record<string, any> = {};
+
   constructor(
     @inject(BindingKeys.NETWORK_HELPER_FACTORY) private readonly networkHelper: NetworkHelper,
     @inject(BindingKeys.APPLICATION_SEND_BASE_URL) private baseUrl: string,
   ) {}
+
+  // -------------------------------------------------------------
+  // SET_DEFAULT_HEADERS
+  // -------------------------------------------------------------
+  setDefaultHeaders(headers: Record<string, any>) {
+    this.defaultHeaders = headers;
+  }
 
   // -------------------------------------------------------------
   // CHANGE_BASE_URL
@@ -52,6 +62,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
     switch (type) {
       case 'form': {
         rs.headers = {
+          ...this.defaultHeaders,
           ...headers,
           'Content-Type': 'application/x-www-form-urlencoded',
         };
