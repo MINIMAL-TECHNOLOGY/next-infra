@@ -59,11 +59,12 @@ export class BaseDataProviderService implements IBaseRestRequestService {
       cache,
     };
 
+    rs.headers = { ...this.defaultHeaders, ...headers };
+
     switch (type) {
       case 'form': {
         rs.headers = {
-          ...this.defaultHeaders,
-          ...headers,
+          ...rs.headers,
           'Content-Type': 'application/x-www-form-urlencoded',
         };
         const formData = new FormData();
@@ -78,14 +79,12 @@ export class BaseDataProviderService implements IBaseRestRequestService {
         break;
       }
       case 'file': {
-        rs.headers = { ...headers };
-
         rs.body = file;
         break;
       }
       default: {
         rs.headers = {
-          ...headers,
+          ...rs.headers,
           'Content-Type': 'application/json',
         };
         rs.body = { ...data, ...body };

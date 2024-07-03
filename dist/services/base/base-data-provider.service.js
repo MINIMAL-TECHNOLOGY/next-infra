@@ -106,9 +106,10 @@ var BaseDataProviderService = /** @class */ (function () {
             query: query,
             cache: cache,
         };
+        rs.headers = __assign(__assign({}, this.defaultHeaders), headers);
         switch (type) {
             case 'form': {
-                rs.headers = __assign(__assign(__assign({}, this.defaultHeaders), headers), { 'Content-Type': 'application/x-www-form-urlencoded' });
+                rs.headers = __assign(__assign({}, rs.headers), { 'Content-Type': 'application/x-www-form-urlencoded' });
                 var formData = new FormData();
                 for (var key in body) {
                     if (!((_a = params.body) === null || _a === void 0 ? void 0 : _a[key])) {
@@ -120,12 +121,11 @@ var BaseDataProviderService = /** @class */ (function () {
                 break;
             }
             case 'file': {
-                rs.headers = __assign({}, headers);
                 rs.body = file;
                 break;
             }
             default: {
-                rs.headers = __assign(__assign({}, headers), { 'Content-Type': 'application/json' });
+                rs.headers = __assign(__assign({}, rs.headers), { 'Content-Type': 'application/json' });
                 rs.body = __assign(__assign({}, data), body);
                 break;
             }
