@@ -49,6 +49,7 @@
     "typescript": "^5.5.2"
   },
   "peerDependencies": {
+    "next": "^14.2.3",
     "terser-webpack-plugin": "^5.3.10"
   }
 }
