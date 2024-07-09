@@ -22,3 +22,11 @@ export class DataProviders {
     return this.SCHEME_SET.has(scheme);
   }
 }
+
+export class NextPublicEnv {
+  static readonly NEXT_PUBLIC_APP_ENV_SEND_BASE_URL = process.env.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL;
+  static readonly NEXT_PUBLIC_APP_ENV_APPLICATION_NAME =
+    process.env.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME ?? 'NextJS Infrastructure';
+  static readonly NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER =
+    process.env.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER ?? DataProviders.BASE;
+}

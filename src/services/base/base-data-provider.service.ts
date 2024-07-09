@@ -23,6 +23,8 @@ export interface IBaseRestRequestService {
 }
 
 // -------------------------------------------------------------
+type ExtendedError = Error & { code?: number };
+
 @injectable()
 export class BaseDataProviderService implements IBaseRestRequestService {
   private defaultHeaders: Record<string, any> = {};
@@ -165,21 +167,24 @@ export class BaseDataProviderService implements IBaseRestRequestService {
           if (status < 200 || status >= 300) {
             return await rs.text().then(text => {
               const json = JSON.parse(text);
-              throw new Error(`${json?.error?.message}`);
+              const err: ExtendedError = new Error(`${json?.error?.message}`);
+              err.code = status;
+
+              throw err;
             });
           } else if (status === 204) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            resolve({} as T);
+            resolve({ status: 204, data: {} } as T);
           }
 
           if ([rs.headers?.get('content-type'), rs.headers?.get('Content-Type')].includes('application/octet-stream')) {
             return await rs.blob().then(blob => {
-              return { data: blob, headers: rs.headers ?? {} };
+              return { status: rs.status, data: blob, headers: rs.headers ?? {} };
             });
           }
 
           return await rs.json().then(data => {
-            return { data, headers: rs.headers ?? {} };
+            return { status: rs.status, data, headers: rs.headers ?? {} };
           });
         })
         .then(async response => {

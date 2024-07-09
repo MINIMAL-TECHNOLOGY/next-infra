@@ -56,7 +56,7 @@ var LBResponseHandlerService = /** @class */ (function (_super) {
                 break;
             }
         }
-        return { data: rs };
+        return { statusCode: opts.status, data: rs };
     };
     LBResponseHandlerService.prototype.handleGetListAndGetManyReference = function (opts) {
         var _a, _b, _c, _d;
@@ -69,27 +69,29 @@ var LBResponseHandlerService = /** @class */ (function (_super) {
         }
         var d = (_c = opts.data) !== null && _c !== void 0 ? _c : [];
         return {
+            statusCode: opts.status,
             data: d,
             total: parseInt((_d = contentRange.split('/').pop()) !== null && _d !== void 0 ? _d : '0', 10) || d.length,
         };
     };
     LBResponseHandlerService.prototype.convertResponse = function (opts) {
-        var _a = opts.response, data = _a.data, headers = _a.headers, type = opts.type, params = opts.params;
+        var _a = opts.response, data = _a.data, headers = _a.headers, status = _a.status, type = opts.type, params = opts.params;
         switch (type) {
             case common_1.RequestTypes.GET_LIST:
             case common_1.RequestTypes.GET_MANY_REFERENCE: {
-                return this.handleGetListAndGetManyReference({ data: data, headers: headers });
+                return this.handleGetListAndGetManyReference({ status: status, data: data, headers: headers });
             }
             case common_1.RequestTypes.CREATE: {
-                return this.handleCreate({ data: data, params: params });
+                return this.handleCreate({ status: status, data: data, params: params });
             }
             case common_1.RequestTypes.DELETE: {
                 return {
+                    statusCode: status,
                     data: __assign(__assign({}, data), { id: params.id }),
                 };
             }
             default: {
-                return { data: data };
+                return { statusCode: status, data: data };
             }
         }
     };

@@ -75,7 +75,6 @@ var common_1 = require("../../common");
 var helpers_1 = require("../../helpers");
 var utilities_1 = require("../../utilities");
 var tsyringe_1 = require("tsyringe");
-// -------------------------------------------------------------
 var BaseDataProviderService = /** @class */ (function () {
     function BaseDataProviderService(networkHelper, baseUrl) {
         this.networkHelper = networkHelper;
@@ -194,25 +193,27 @@ var BaseDataProviderService = /** @class */ (function () {
                                                 return [4 /*yield*/, rs.text().then(function (text) {
                                                         var _a;
                                                         var json = JSON.parse(text);
-                                                        throw new Error("".concat((_a = json === null || json === void 0 ? void 0 : json.error) === null || _a === void 0 ? void 0 : _a.message));
+                                                        var err = new Error("".concat((_a = json === null || json === void 0 ? void 0 : json.error) === null || _a === void 0 ? void 0 : _a.message));
+                                                        err.code = status;
+                                                        throw err;
                                                     })];
                                             case 1: return [2 /*return*/, _c.sent()];
                                             case 2:
                                                 if (status === 204) {
                                                     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                                                    resolve({});
+                                                    resolve({ status: 204, data: {} });
                                                 }
                                                 _c.label = 3;
                                             case 3:
                                                 if (![(_a = rs.headers) === null || _a === void 0 ? void 0 : _a.get('content-type'), (_b = rs.headers) === null || _b === void 0 ? void 0 : _b.get('Content-Type')].includes('application/octet-stream')) return [3 /*break*/, 5];
                                                 return [4 /*yield*/, rs.blob().then(function (blob) {
                                                         var _a;
-                                                        return { data: blob, headers: (_a = rs.headers) !== null && _a !== void 0 ? _a : {} };
+                                                        return { status: rs.status, data: blob, headers: (_a = rs.headers) !== null && _a !== void 0 ? _a : {} };
                                                     })];
                                             case 4: return [2 /*return*/, _c.sent()];
                                             case 5: return [4 /*yield*/, rs.json().then(function (data) {
                                                     var _a;
-                                                    return { data: data, headers: (_a = rs.headers) !== null && _a !== void 0 ? _a : {} };
+                                                    return { status: rs.status, data: data, headers: (_a = rs.headers) !== null && _a !== void 0 ? _a : {} };
                                                 })];
                                             case 6: return [2 /*return*/, _c.sent()];
                                         }

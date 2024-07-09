@@ -5,13 +5,13 @@ import { getError } from '@/utilities';
 import { container, injectable } from 'tsyringe';
 
 export interface ILBResponseHandlerService extends IBaseResponseHandlerService {
-  handleCreate: <T>(opts: { data: any | any[]; params: any }) => T;
-  handleGetListAndGetManyReference: <T>(opts: { data: any | any[]; headers: Record<string, any> }) => T;
+  handleCreate: <T>(opts: { status: number; data: any | any[]; params: any }) => T;
+  handleGetListAndGetManyReference: <T>(opts: { status: number; data: any | any[]; headers: Record<string, any> }) => T;
 }
 
 @injectable()
 export class LBResponseHandlerService extends BaseResponseHandlerService implements ILBResponseHandlerService {
-  handleCreate<T>(opts: { data: any | any[]; params: any }): T {
+  handleCreate<T>(opts: { status: number; data: any | any[]; params: any }): T {
     let rs: any = { id: opts.data?.id };
 
     switch (opts.params?.type) {
@@ -25,10 +25,10 @@ export class LBResponseHandlerService extends BaseResponseHandlerService impleme
       }
     }
 
-    return { data: rs } as T;
+    return { statusCode: opts.status, data: rs } as T;
   }
 
-  handleGetListAndGetManyReference<T>(opts: { data: any | any[]; headers: Record<string, any> }): T {
+  handleGetListAndGetManyReference<T>(opts: { status: number; data: any | any[]; headers: Record<string, any> }): T {
     // content-range: <unit> <range-start>-<range-end>/<size>
     const contentRange: string | undefined = opts.headers?.get('content-range') || opts.headers?.get['Content-Range'];
 
@@ -42,18 +42,19 @@ export class LBResponseHandlerService extends BaseResponseHandlerService impleme
     const d = opts.data ?? [];
 
     return {
+      statusCode: opts.status,
       data: d,
       total: parseInt(contentRange.split('/').pop() ?? '0', 10) || d.length,
     } as T;
   }
 
   convertResponse<T>(opts: {
-    response: { data: any | any[]; headers: Record<string, any> };
+    response: { status: number; data: any | any[]; headers: Record<string, any> };
     type: string;
     params: any;
   }): T {
     const {
-      response: { data, headers },
+      response: { data, headers, status },
       type,
       params,
     } = opts;
@@ -61,18 +62,19 @@ export class LBResponseHandlerService extends BaseResponseHandlerService impleme
     switch (type) {
       case RequestTypes.GET_LIST:
       case RequestTypes.GET_MANY_REFERENCE: {
-        return this.handleGetListAndGetManyReference({ data, headers });
+        return this.handleGetListAndGetManyReference({ status, data, headers });
       }
       case RequestTypes.CREATE: {
-        return this.handleCreate({ data, params });
+        return this.handleCreate({ status, data, params });
       }
       case RequestTypes.DELETE: {
         return {
+          statusCode: status,
           data: { ...data, id: params.id },
         } as T;
       }
       default: {
-        return { data } as T;
+        return { statusCode: status, data } as T;
       }
     }
   }

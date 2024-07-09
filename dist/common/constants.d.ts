@@ -16,3 +16,8 @@ export declare class DataProviders {
     static readonly SCHEME_SET: Set<string>;
     static isValid(scheme: string): boolean;
 }
+export declare class NextPublicEnv {
+    static readonly NEXT_PUBLIC_APP_ENV_SEND_BASE_URL: string | undefined;
+    static readonly NEXT_PUBLIC_APP_ENV_APPLICATION_NAME: string;
+    static readonly NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER: string;
+}

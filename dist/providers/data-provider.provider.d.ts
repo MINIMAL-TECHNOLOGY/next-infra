@@ -1,2 +1,1 @@
-import { container } from 'tsyringe';
-export { container };
+export declare const setupContainer: () => import("tsyringe").DependencyContainer;
