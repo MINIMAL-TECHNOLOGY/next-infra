@@ -47,5 +47,8 @@
     "tsc-alias": "^1.8.7",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.5.2"
+  },
+  "peerDependencies": {
+    "terser-webpack-plugin": "^5.3.10"
   }
 }
