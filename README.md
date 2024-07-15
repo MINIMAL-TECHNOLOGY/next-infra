@@ -11,7 +11,7 @@ pnpm add -D terser-webpack-plugin@^5.3.10
 
 This command installs this package as a dependency in your project.
 
-### Setup
+## Setup
 
 In your `next.config.mjs` file, set up webpack as well as the external packages:
 
@@ -79,3 +79,56 @@ export async function register() {
   }
 }
 ```
+
+## Integrations
+
+1. `NextAuth`: dataProvider can be used to set the default header in the entire application for both client side and server side like this:
+- data-provider-server.ts
+```typescript
+import { auth } from '@/auth';
+import dataProvider from '@/data-provider';
+
+export async function getServerSideDataProvider() {
+  const session = await auth();
+
+  if (session?.sessionToken) {
+    dataProvider?.setDefaultHeaders({ Authorization: `Bearer ${session.sessionToken}` });
+  } else {
+    dataProvider?.setDefaultHeaders({});
+  }
+
+  return dataProvider;
+}
+```
+- data-provider-client.tsx
+```tsx
+'use client';
+import React, { useEffect, useState } from 'react';
+
+import { type ILBDataProvider } from '@mt/next-infra';
+import { useSession } from 'next-auth/react';
+import dataProviderClient from '@/data-provider';
+
+export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const session = useSession();
+  const [dataProvider, setDataProvider] = useState<ILBDataProvider | undefined>(dataProviderClient);
+
+  useEffect(() => {
+    if (!session?.data?.sessionToken) {
+      dataProvider?.setDefaultHeaders({});
+      return;
+    }
+
+    dataProvider?.setDefaultHeaders({ Authorization: `Bearer ${session.data.sessionToken}` });
+
+    setDataProvider(dataProvider);
+  }, [session, dataProvider]);
+
+  return <DataProviderContext.Provider value={dataProvider}>{children}</DataProviderContext.Provider>;
+};
+
+export const DataProviderContext = React.createContext<ILBDataProvider | undefined>(undefined);
+
+export const useDataProvider = () => React.useContext(DataProviderContext);
+```
+
