@@ -23,11 +23,11 @@ export interface IBaseRestRequestService {
 }
 
 // -------------------------------------------------------------
-type ExtendedError = Error & { code?: number };
+type TExtendedError = Error & { code?: number };
 
 @injectable()
 export class BaseDataProviderService implements IBaseRestRequestService {
-  private networkHelper: NetworkHelper;
+  private readonly networkHelper: NetworkHelper;
   private defaultHeaders: Record<string, any> = {};
 
   constructor(@inject(BindingKeys.APPLICATION_SEND_BASE_URL) private baseUrl: string) {
@@ -169,7 +169,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
           if (status < 200 || status >= 300) {
             return await rs.text().then(text => {
               const json = JSON.parse(text);
-              const err: ExtendedError = new Error(`${json?.error?.message}`);
+              const err: TExtendedError = new Error(`${json?.error?.message}`);
               err.code = status;
 
               throw err;

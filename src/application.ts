@@ -1,7 +1,7 @@
 import '@abraham/reflection';
 
 import { BindingKeys, NextPublicEnv } from '@/common';
-import { ApplicationLogger, LoggerFactory } from '@/helpers';
+import { type ApplicationLogger, LoggerFactory } from '@/helpers';
 import { setupContainer } from '@/providers';
 import { isServerSideRendering } from '@/utilities';
 import { container as tsyringeContainer } from 'tsyringe';
