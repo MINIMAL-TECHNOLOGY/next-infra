@@ -76,10 +76,12 @@ var helpers_1 = require("../../helpers");
 var utilities_1 = require("../../utilities");
 var tsyringe_1 = require("tsyringe");
 var BaseDataProviderService = /** @class */ (function () {
-    function BaseDataProviderService(networkHelper, baseUrl) {
-        this.networkHelper = networkHelper;
+    function BaseDataProviderService(baseUrl) {
         this.baseUrl = baseUrl;
         this.defaultHeaders = {};
+        this.networkHelper = new helpers_1.NetworkHelper({
+            name: 'NEXT_INFRA_NETWORK_SERVICE',
+        });
     }
     // -------------------------------------------------------------
     // SET_DEFAULT_HEADERS
@@ -266,9 +268,8 @@ var BaseDataProviderService = /** @class */ (function () {
     };
     BaseDataProviderService = __decorate([
         (0, tsyringe_1.injectable)(),
-        __param(0, (0, tsyringe_1.inject)(common_1.BindingKeys.NETWORK_HELPER_FACTORY)),
-        __param(1, (0, tsyringe_1.inject)(common_1.BindingKeys.APPLICATION_SEND_BASE_URL)),
-        __metadata("design:paramtypes", [helpers_1.NetworkHelper, String])
+        __param(0, (0, tsyringe_1.inject)(common_1.BindingKeys.APPLICATION_SEND_BASE_URL)),
+        __metadata("design:paramtypes", [String])
     ], BaseDataProviderService);
     return BaseDataProviderService;
 }());

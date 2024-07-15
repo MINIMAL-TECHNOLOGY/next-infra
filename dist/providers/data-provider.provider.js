@@ -2,18 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupContainer = void 0;
 var common_1 = require("../common");
-var helpers_1 = require("../helpers");
 var services_1 = require("../services");
 var utilities_1 = require("../utilities");
 var tsyringe_1 = require("tsyringe");
 var setupContainer = function () {
-    tsyringe_1.container.register(common_1.BindingKeys.NETWORK_HELPER_FACTORY, {
-        useFactory: (0, tsyringe_1.instanceCachingFactory)(function () {
-            return new helpers_1.NetworkHelper({
-                name: 'NEXT_INFRA_NETWORK_SERVICE',
-            });
-        }),
-    });
     tsyringe_1.container.register(common_1.BindingKeys.NEXT_DATA_PROVIDER_HANDLER, {
         useFactory: function (c) {
             var currentDataProvider = c.resolve(common_1.BindingKeys.DATA_PROVIDER_IDENTIFIER);

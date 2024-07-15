@@ -87,15 +87,14 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LBDataProviderService = void 0;
 var common_1 = require("../../common");
-var helpers_1 = require("../../helpers");
 var services_1 = require("../../services");
 var utilities_1 = require("../../utilities");
 var lodash_utility_1 = require("../../utilities/lodash.utility");
 var tsyringe_1 = require("tsyringe");
 var LBDataProviderService = /** @class */ (function (_super) {
     __extends(LBDataProviderService, _super);
-    function LBDataProviderService(networkHelper, baseUrl) {
-        return _super.call(this, networkHelper, baseUrl) || this;
+    function LBDataProviderService(baseUrl) {
+        return _super.call(this, baseUrl) || this;
     }
     // -------------------------------------------------------------
     // GET_LIST
@@ -383,7 +382,7 @@ var LBDataProviderService = /** @class */ (function (_super) {
     // -------------------------------------------------------------
     LBDataProviderService.prototype.deleteMany = function (resource, params, baseUrl) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, ids, meta, request_1, paths, response, request, arrayPaths;
+            var _a, ids, meta, request_1, paths, response, request, arrayPaths, doMultipleRequests, responses;
             var _this = this;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -404,29 +403,32 @@ var LBDataProviderService = /** @class */ (function (_super) {
                         arrayPaths = ids.map(function (id) {
                             return [resource, "".concat(id)];
                         });
-                        return [4 /*yield*/, Promise.all(arrayPaths.map(function (paths) { return __awaiter(_this, void 0, void 0, function () {
-                                return __generator(this, function (_a) {
-                                    switch (_a.label) {
-                                        case 0: return [4 /*yield*/, this.doRequest(__assign({ type: common_1.RequestTypes.DELETE_MANY, baseUrl: baseUrl, method: 'DELETE', paths: paths, params: params }, request))];
-                                        case 1: return [2 /*return*/, _a.sent()];
-                                    }
-                                });
-                            }); })).then(function (responses) {
-                                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                                return {
-                                    data: responses.map(function (response) { return response.data; }),
-                                };
-                            })];
-                    case 3: return [2 /*return*/, _b.sent()];
+                        doMultipleRequests = arrayPaths.map(function (paths) { return __awaiter(_this, void 0, void 0, function () {
+                            var requestResult;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, this.doRequest(__assign({ type: common_1.RequestTypes.DELETE_MANY, baseUrl: baseUrl, method: 'DELETE', paths: paths, params: params }, request))];
+                                    case 1:
+                                        requestResult = _a.sent();
+                                        return [2 /*return*/, requestResult];
+                                }
+                            });
+                        }); });
+                        return [4 /*yield*/, Promise.all(doMultipleRequests)];
+                    case 3:
+                        responses = _b.sent();
+                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                        return [2 /*return*/, {
+                                data: responses.map(function (response) { return response.data; }),
+                            }];
                 }
             });
         });
     };
     LBDataProviderService = __decorate([
         (0, tsyringe_1.injectable)(),
-        __param(0, (0, tsyringe_1.inject)(common_1.BindingKeys.NETWORK_HELPER_FACTORY)),
-        __param(1, (0, tsyringe_1.inject)(common_1.BindingKeys.APPLICATION_SEND_BASE_URL)),
-        __metadata("design:paramtypes", [helpers_1.NetworkHelper, String])
+        __param(0, (0, tsyringe_1.inject)(common_1.BindingKeys.APPLICATION_SEND_BASE_URL)),
+        __metadata("design:paramtypes", [String])
     ], LBDataProviderService);
     return LBDataProviderService;
 }(services_1.BaseDataProviderService));

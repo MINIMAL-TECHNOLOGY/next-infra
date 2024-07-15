@@ -27,12 +27,14 @@ type ExtendedError = Error & { code?: number };
 
 @injectable()
 export class BaseDataProviderService implements IBaseRestRequestService {
+  private networkHelper: NetworkHelper;
   private defaultHeaders: Record<string, any> = {};
 
-  constructor(
-    @inject(BindingKeys.NETWORK_HELPER_FACTORY) private readonly networkHelper: NetworkHelper,
-    @inject(BindingKeys.APPLICATION_SEND_BASE_URL) private baseUrl: string,
-  ) {}
+  constructor(@inject(BindingKeys.APPLICATION_SEND_BASE_URL) private baseUrl: string) {
+    this.networkHelper = new NetworkHelper({
+      name: 'NEXT_INFRA_NETWORK_SERVICE',
+    });
+  }
 
   // -------------------------------------------------------------
   // SET_DEFAULT_HEADERS

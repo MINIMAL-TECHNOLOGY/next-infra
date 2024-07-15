@@ -1,5 +1,4 @@
 import { type IParam } from '../../common';
-import { NetworkHelper } from '../../helpers';
 import { BaseDataProviderService, type IBaseRestRequestService } from '../../services';
 export interface ILBDataProvider extends IBaseRestRequestService {
     getList: <T>(resource: string, params: Record<string, any>) => Promise<T>;
@@ -13,7 +12,7 @@ export interface ILBDataProvider extends IBaseRestRequestService {
     deleteMany: <T>(resource: string, params: IParam & Record<string, any>) => Promise<T>;
 }
 export declare class LBDataProviderService extends BaseDataProviderService implements ILBDataProvider {
-    constructor(networkHelper: NetworkHelper, baseUrl: string);
+    constructor(baseUrl: string);
     getList<T>(resource: string, params: Record<string, any>, baseUrl?: string): Promise<T>;
     getOne<T>(resource: string, params: Record<string, any>, baseUrl?: string): Promise<T>;
     getMany<T>(resource: string, params: Record<string, any>, baseUrl?: string): Promise<T>;

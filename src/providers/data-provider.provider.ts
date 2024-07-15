@@ -1,5 +1,4 @@
 import { BindingKeys, DataProviders } from '@/common';
-import { NetworkHelper } from '@/helpers';
 import {
   BaseDataProviderService,
   BaseResponseHandlerService,
@@ -9,17 +8,9 @@ import {
   type IBaseRestRequestService,
 } from '@/services';
 import { getError } from '@/utilities';
-import { container, instanceCachingFactory } from 'tsyringe';
+import { container } from 'tsyringe';
 
 export const setupContainer = () => {
-  container.register(BindingKeys.NETWORK_HELPER_FACTORY, {
-    useFactory: instanceCachingFactory<NetworkHelper>(() => {
-      return new NetworkHelper({
-        name: 'NEXT_INFRA_NETWORK_SERVICE',
-      });
-    }),
-  });
-
   container.register(BindingKeys.NEXT_DATA_PROVIDER_HANDLER, {
     useFactory: (c): IBaseResponseHandlerService => {
       const currentDataProvider = c.resolve<string>(BindingKeys.DATA_PROVIDER_IDENTIFIER);

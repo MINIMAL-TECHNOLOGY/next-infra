@@ -1,5 +1,4 @@
 import { BindingKeys, RequestTypes, type IParam } from '@/common';
-import { NetworkHelper } from '@/helpers';
 import { BaseDataProviderService, type IBaseRestRequestService } from '@/services';
 import { getError } from '@/utilities';
 import { omit } from '@/utilities/lodash.utility';
@@ -20,11 +19,8 @@ export interface ILBDataProvider extends IBaseRestRequestService {
 
 @injectable()
 export class LBDataProviderService extends BaseDataProviderService implements ILBDataProvider {
-  constructor(
-    @inject(BindingKeys.NETWORK_HELPER_FACTORY) networkHelper: NetworkHelper,
-    @inject(BindingKeys.APPLICATION_SEND_BASE_URL) baseUrl: string,
-  ) {
-    super(networkHelper, baseUrl);
+  constructor(@inject(BindingKeys.APPLICATION_SEND_BASE_URL) baseUrl: string) {
+    super(baseUrl);
   }
 
   // -------------------------------------------------------------
@@ -364,23 +360,25 @@ export class LBDataProviderService extends BaseDataProviderService implements IL
       return [resource, `${id}`];
     });
 
-    return await Promise.all(
-      arrayPaths.map(async (paths: string[]) => {
-        return await this.doRequest({
-          type: RequestTypes.DELETE_MANY,
-          baseUrl,
-          method: 'DELETE',
-          paths,
-          params,
-          ...request,
-        });
-      }),
-    ).then(responses => {
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      return {
-        data: responses.map((response: any) => response.data),
-      } as T;
+    const doMultipleRequests = arrayPaths.map(async (paths: string[]) => {
+      const requestResult = await this.doRequest<T>({
+        type: RequestTypes.DELETE_MANY,
+        baseUrl,
+        method: 'DELETE',
+        paths,
+        params,
+        ...request,
+      });
+
+      return requestResult;
     });
+
+    const responses = await Promise.all(doMultipleRequests);
+
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return {
+      data: responses.map((response: any) => response.data),
+    } as T;
   }
 }
 
