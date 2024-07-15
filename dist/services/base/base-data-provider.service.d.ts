@@ -23,7 +23,7 @@ export interface IBaseRestRequestService {
 }
 export declare class BaseDataProviderService implements IBaseRestRequestService {
     private baseUrl;
-    private networkHelper;
+    private readonly networkHelper;
     private defaultHeaders;
     constructor(baseUrl: string);
     setDefaultHeaders(headers: Record<string, any>): void;
