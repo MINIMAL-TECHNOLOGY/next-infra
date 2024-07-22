@@ -112,7 +112,7 @@ export class ApplicationLogger {
   }
 
   async initialize() {
-    if (isServerSideRendering()) {
+    if (isServerSideRendering() && process.env.NEXT_RUNTIME === 'nodejs') {
       await this.initializeServerLogger();
       return;
     }
