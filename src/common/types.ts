@@ -16,7 +16,7 @@ export interface IParam {
   bodyType?: string;
   body?: TAnyObject;
   file?: FormData;
-  query?: Record<string, string | number>;
+  query?: Record<string, string | number | object | null>;
   headers?: Record<string, string | number>;
   ids?: string[] | number[];
   data?: TAnyObject;
