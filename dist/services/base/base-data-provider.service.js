@@ -207,7 +207,8 @@ var BaseDataProviderService = /** @class */ (function () {
                                                 }
                                                 _c.label = 3;
                                             case 3:
-                                                if (![(_a = rs.headers) === null || _a === void 0 ? void 0 : _a.get('content-type'), (_b = rs.headers) === null || _b === void 0 ? void 0 : _b.get('Content-Type')].includes('application/octet-stream')) return [3 /*break*/, 5];
+                                                if (!([(_a = rs.headers) === null || _a === void 0 ? void 0 : _a.get('content-type'), (_b = rs.headers) === null || _b === void 0 ? void 0 : _b.get('Content-Type')].includes('application/octet-stream') ||
+                                                    status === 206)) return [3 /*break*/, 5];
                                                 return [4 /*yield*/, rs.blob().then(function (blob) {
                                                         var _a;
                                                         return { status: rs.status, data: blob, headers: (_a = rs.headers) !== null && _a !== void 0 ? _a : {} };

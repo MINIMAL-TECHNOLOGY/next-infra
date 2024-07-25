@@ -179,7 +179,10 @@ export class BaseDataProviderService implements IBaseRestRequestService {
             resolve({ status: 204, data: {} } as T);
           }
 
-          if ([rs.headers?.get('content-type'), rs.headers?.get('Content-Type')].includes('application/octet-stream')) {
+          if (
+            [rs.headers?.get('content-type'), rs.headers?.get('Content-Type')].includes('application/octet-stream') ||
+            status === 206
+          ) {
             return await rs.blob().then(blob => {
               return { status: rs.status, data: blob, headers: rs.headers ?? {} };
             });
