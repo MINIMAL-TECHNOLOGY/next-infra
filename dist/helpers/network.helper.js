@@ -102,7 +102,7 @@ var NetworkHelper = /** @class */ (function () {
                     case 0:
                         t = new Date().getTime();
                         url = opts.url, _a = opts.method, method = _a === void 0 ? 'GET' : _a, params = opts.params, body = opts.body, configs = opts.configs;
-                        props = __assign({ method: method, body: JSON.stringify(body) }, configs);
+                        props = __assign({ method: method, body: body instanceof FormData ? body : JSON.stringify(body) }, configs);
                         requestUrl = url;
                         if (params) {
                             requestUrl = "".concat(url, "?").concat((0, utilities_1.stringify)(params));

@@ -42,7 +42,7 @@ export class NetworkHelper {
     const { url, method = 'GET', params, body, configs } = opts;
     const props = {
       method,
-      body: JSON.stringify(body),
+      body: body instanceof FormData ? body : JSON.stringify(body),
       ...configs,
     };
 
