@@ -186,9 +186,9 @@ var BaseDataProviderService = /** @class */ (function () {
                                 })
                                     .then(function (rs) { return __awaiter(_this, void 0, void 0, function () {
                                     var status;
-                                    var _a, _b;
-                                    return __generator(this, function (_c) {
-                                        switch (_c.label) {
+                                    var _a, _b, _c, _d;
+                                    return __generator(this, function (_e) {
+                                        switch (_e.label) {
                                             case 0:
                                                 status = rs.status;
                                                 if (!(status < 200 || status >= 300)) return [3 /*break*/, 2];
@@ -199,26 +199,51 @@ var BaseDataProviderService = /** @class */ (function () {
                                                         err.code = status;
                                                         throw err;
                                                     })];
-                                            case 1: return [2 /*return*/, _c.sent()];
+                                            case 1: return [2 /*return*/, _e.sent()];
                                             case 2:
                                                 if (status === 204) {
                                                     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                                                     resolve({ status: 204, data: {} });
                                                 }
-                                                _c.label = 3;
+                                                _e.label = 3;
                                             case 3:
-                                                if (!([(_a = rs.headers) === null || _a === void 0 ? void 0 : _a.get('content-type'), (_b = rs.headers) === null || _b === void 0 ? void 0 : _b.get('Content-Type')].includes('application/octet-stream') ||
-                                                    status === 206)) return [3 /*break*/, 5];
+                                                if (![(_a = rs.headers) === null || _a === void 0 ? void 0 : _a.get('content-type'), (_b = rs.headers) === null || _b === void 0 ? void 0 : _b.get('Content-Type')].includes('application/octet-stream')) return [3 /*break*/, 5];
                                                 return [4 /*yield*/, rs.blob().then(function (blob) {
                                                         var _a;
                                                         return { status: rs.status, data: blob, headers: (_a = rs.headers) !== null && _a !== void 0 ? _a : {} };
                                                     })];
-                                            case 4: return [2 /*return*/, _c.sent()];
-                                            case 5: return [4 /*yield*/, rs.json().then(function (data) {
+                                            case 4: return [2 /*return*/, _e.sent()];
+                                            case 5:
+                                                if (![(_c = rs.headers) === null || _c === void 0 ? void 0 : _c.get('content-type'), (_d = rs.headers) === null || _d === void 0 ? void 0 : _d.get('Content-Type')].includes('binary/octet-stream')) return [3 /*break*/, 7];
+                                                return [4 /*yield*/, rs.blob().then(function (blob) {
+                                                        var _a, _b;
+                                                        var data = blob;
+                                                        if ((0, utilities_1.isClientSideRendering)()) {
+                                                            try {
+                                                                var url_1 = window.URL.createObjectURL(blob);
+                                                                var a = document.createElement('a');
+                                                                a.href = url_1;
+                                                                a.download =
+                                                                    (_a = rs.headers.get('Normalizename')) !== null && _a !== void 0 ? _a : "".concat(common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME, "-download");
+                                                                document.body.appendChild(a);
+                                                                a.click();
+                                                                a.remove();
+                                                                window.URL.revokeObjectURL(url_1);
+                                                                data = {};
+                                                            }
+                                                            catch (error) {
+                                                                console.error('Failed to download file:', error);
+                                                                throw error;
+                                                            }
+                                                        }
+                                                        return { status: rs.status, data: data, headers: (_b = rs.headers) !== null && _b !== void 0 ? _b : {} };
+                                                    })];
+                                            case 6: return [2 /*return*/, _e.sent()];
+                                            case 7: return [4 /*yield*/, rs.json().then(function (data) {
                                                     var _a;
                                                     return { status: rs.status, data: data, headers: (_a = rs.headers) !== null && _a !== void 0 ? _a : {} };
                                                 })];
-                                            case 6: return [2 /*return*/, _c.sent()];
+                                            case 8: return [2 /*return*/, _e.sent()];
                                         }
                                     });
                                 }); })

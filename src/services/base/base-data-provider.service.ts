@@ -1,8 +1,8 @@
-import { BindingKeys, RequestTypes } from '@/common';
+import { BindingKeys, NextPublicEnv, RequestTypes } from '@/common';
 import type { IParam, IRequestProps, TRequestMethod } from '@/common/types';
 import { NetworkHelper } from '@/helpers';
 import { type BaseResponseHandlerService } from '@/services';
-import { getError, isEmpty } from '@/utilities';
+import { getError, isClientSideRendering, isEmpty } from '@/utilities';
 import { container, inject, injectable } from 'tsyringe';
 
 export interface IBaseRestRequestService {
@@ -179,12 +179,34 @@ export class BaseDataProviderService implements IBaseRestRequestService {
             resolve({ status: 204, data: {} } as T);
           }
 
-          if (
-            [rs.headers?.get('content-type'), rs.headers?.get('Content-Type')].includes('application/octet-stream') ||
-            status === 206
-          ) {
+          if ([rs.headers?.get('content-type'), rs.headers?.get('Content-Type')].includes('application/octet-stream')) {
             return await rs.blob().then(blob => {
               return { status: rs.status, data: blob, headers: rs.headers ?? {} };
+            });
+          } else if (
+            [rs.headers?.get('content-type'), rs.headers?.get('Content-Type')].includes('binary/octet-stream')
+          ) {
+            return await rs.blob().then(blob => {
+              let data: Blob | {} = blob;
+              if (isClientSideRendering()) {
+                try {
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download =
+                    rs.headers.get('Normalizename') ?? `${NextPublicEnv.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME}-download`;
+                  document.body.appendChild(a);
+                  a.click();
+                  a.remove();
+                  window.URL.revokeObjectURL(url);
+
+                  data = {};
+                } catch (error) {
+                  console.error('Failed to download file:', error);
+                  throw error;
+                }
+              }
+              return { status: rs.status, data, headers: rs.headers ?? {} };
             });
           }
 
