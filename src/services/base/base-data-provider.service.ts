@@ -187,7 +187,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
             [rs.headers?.get('content-type'), rs.headers?.get('Content-Type')].includes('binary/octet-stream')
           ) {
             return await rs.blob().then(blob => {
-              let data: Blob | {} = blob;
+              let data: Blob | Record<string, unknown> = blob;
               if (isClientSideRendering()) {
                 try {
                   const url = window.URL.createObjectURL(blob);

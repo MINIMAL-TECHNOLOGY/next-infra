@@ -17,7 +17,7 @@ export class BaseResponseHandlerService implements IBaseResponseHandlerService {
     params: any;
   }): T {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    return { statusCode: opts.response.status, data: opts.response.data } as T;
+    return { statusCode: opts.response.status, data: opts.response.data, headers: opts.response.headers } as T;
   }
 }
 

@@ -13,7 +13,7 @@ var BaseResponseHandlerService = /** @class */ (function () {
     }
     BaseResponseHandlerService.prototype.convertResponse = function (opts) {
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        return { statusCode: opts.response.status, data: opts.response.data };
+        return { statusCode: opts.response.status, data: opts.response.data, headers: opts.response.headers };
     };
     BaseResponseHandlerService = __decorate([
         (0, tsyringe_1.injectable)()
