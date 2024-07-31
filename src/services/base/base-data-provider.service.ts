@@ -176,7 +176,7 @@ export class BaseDataProviderService implements IBaseRestRequestService {
             });
           } else if (status === 204) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            resolve({ status: 204, data: {} } as T);
+            resolve({ status: 204, data: {}, headers: rs.headers } as T);
           }
 
           if ([rs.headers?.get('content-type'), rs.headers?.get('Content-Type')].includes('application/octet-stream')) {

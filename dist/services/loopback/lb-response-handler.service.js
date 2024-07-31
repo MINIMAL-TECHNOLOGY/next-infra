@@ -91,7 +91,7 @@ var LBResponseHandlerService = /** @class */ (function (_super) {
                 };
             }
             default: {
-                return { statusCode: status, data: data };
+                return { statusCode: status, data: data, headers: headers };
             }
         }
     };

@@ -74,7 +74,7 @@ export class LBResponseHandlerService extends BaseResponseHandlerService impleme
         } as T;
       }
       default: {
-        return { statusCode: status, data } as T;
+        return { statusCode: status, data, headers } as T;
       }
     }
   }

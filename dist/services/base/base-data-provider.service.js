@@ -203,7 +203,7 @@ var BaseDataProviderService = /** @class */ (function () {
                                             case 2:
                                                 if (status === 204) {
                                                     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                                                    resolve({ status: 204, data: {} });
+                                                    resolve({ status: 204, data: {}, headers: rs.headers });
                                                 }
                                                 _e.label = 3;
                                             case 3:
