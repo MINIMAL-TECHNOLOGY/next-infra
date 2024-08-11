@@ -216,15 +216,17 @@ var BaseDataProviderService = /** @class */ (function () {
                                             case 5:
                                                 if (![(_c = rs.headers) === null || _c === void 0 ? void 0 : _c.get('content-type'), (_d = rs.headers) === null || _d === void 0 ? void 0 : _d.get('Content-Type')].includes('binary/octet-stream')) return [3 /*break*/, 7];
                                                 return [4 /*yield*/, rs.blob().then(function (blob) {
-                                                        var _a, _b;
+                                                        var _a, _b, _c;
                                                         var data = blob;
                                                         if ((0, utilities_1.isClientSideRendering)()) {
                                                             try {
                                                                 var url_1 = window.URL.createObjectURL(blob);
                                                                 var a = document.createElement('a');
                                                                 a.href = url_1;
-                                                                a.download =
-                                                                    (_a = rs.headers.get('Normalizename')) !== null && _a !== void 0 ? _a : "".concat(common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME, "-download");
+                                                                var splittedPath = (_a = paths === null || paths === void 0 ? void 0 : paths[0]) === null || _a === void 0 ? void 0 : _a.split('/');
+                                                                var decodedFilename = (_b = decodeURIComponent(splittedPath[splittedPath.length - 2])) === null || _b === void 0 ? void 0 : _b.split('/');
+                                                                var originalFilename = decodedFilename === null || decodedFilename === void 0 ? void 0 : decodedFilename[decodedFilename.length - 1];
+                                                                a.download = originalFilename !== null && originalFilename !== void 0 ? originalFilename : "".concat(common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME, "-download");
                                                                 document.body.appendChild(a);
                                                                 a.click();
                                                                 a.remove();
@@ -236,7 +238,7 @@ var BaseDataProviderService = /** @class */ (function () {
                                                                 throw error;
                                                             }
                                                         }
-                                                        return { status: rs.status, data: data, headers: (_b = rs.headers) !== null && _b !== void 0 ? _b : {} };
+                                                        return { status: rs.status, data: data, headers: (_c = rs.headers) !== null && _c !== void 0 ? _c : {} };
                                                     })];
                                             case 6: return [2 /*return*/, _e.sent()];
                                             case 7: return [4 /*yield*/, rs.json().then(function (data) {

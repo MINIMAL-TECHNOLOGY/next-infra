@@ -193,8 +193,10 @@ export class BaseDataProviderService implements IBaseRestRequestService {
                   const url = window.URL.createObjectURL(blob);
                   const a = document.createElement('a');
                   a.href = url;
-                  a.download =
-                    rs.headers.get('Normalizename') ?? `${NextPublicEnv.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME}-download`;
+                  const splittedPath = paths?.[0]?.split('/');
+                  const decodedFilename = decodeURIComponent(splittedPath[splittedPath.length - 2])?.split('/');
+                  const originalFilename = decodedFilename?.[decodedFilename.length - 1];
+                  a.download = originalFilename ?? `${NextPublicEnv.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME}-download`;
                   document.body.appendChild(a);
                   a.click();
                   a.remove();
