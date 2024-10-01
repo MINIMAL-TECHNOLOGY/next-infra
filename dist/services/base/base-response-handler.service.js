@@ -16,7 +16,7 @@ var BaseResponseHandlerService = /** @class */ (function () {
         return { statusCode: opts.response.status, data: opts.response.data, headers: opts.response.headers };
     };
     BaseResponseHandlerService = __decorate([
-        (0, tsyringe_1.injectable)()
+        (0, tsyringe_1.singleton)()
     ], BaseResponseHandlerService);
     return BaseResponseHandlerService;
 }());

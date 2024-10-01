@@ -3,7 +3,7 @@ import type { IParam, IRequestProps, TRequestMethod } from '@/common/types';
 import { NetworkHelper } from '@/helpers';
 import { type BaseResponseHandlerService } from '@/services';
 import { getError, isClientSideRendering, isEmpty } from '@/utilities';
-import { container, inject, injectable } from 'tsyringe';
+import { container, inject, singleton } from 'tsyringe';
 
 export interface IBaseRestRequestService {
   setDefaultHeaders: (headers: Record<string, any>) => void;
@@ -25,7 +25,7 @@ export interface IBaseRestRequestService {
 // -------------------------------------------------------------
 type TExtendedError = Error & { code?: number };
 
-@injectable()
+@singleton()
 export class BaseDataProviderService implements IBaseRestRequestService {
   private readonly networkHelper: NetworkHelper;
   private defaultHeaders: Record<string, any> = {};

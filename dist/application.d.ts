@@ -1,3 +1,3 @@
 import '@abraham/reflection';
-declare const container: import("tsyringe").DependencyContainer | undefined;
+declare const container: import("tsyringe").DependencyContainer;
 export default container;

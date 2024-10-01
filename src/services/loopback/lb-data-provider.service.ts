@@ -2,7 +2,7 @@ import { BindingKeys, RequestTypes, type IParam } from '@/common';
 import { BaseDataProviderService, type IBaseRestRequestService } from '@/services';
 import { getError } from '@/utilities';
 import { omit } from '@/utilities/lodash.utility';
-import { container, inject, injectable } from 'tsyringe';
+import { container, inject, singleton } from 'tsyringe';
 
 // -------------------------------------------------------------
 export interface ILBDataProvider extends IBaseRestRequestService {
@@ -17,7 +17,7 @@ export interface ILBDataProvider extends IBaseRestRequestService {
   deleteMany: <T>(resource: string, params: IParam & Record<string, any>) => Promise<T>;
 }
 
-@injectable()
+@singleton()
 export class LBDataProviderService extends BaseDataProviderService implements ILBDataProvider {
   constructor(@inject(BindingKeys.APPLICATION_SEND_BASE_URL) baseUrl: string) {
     super(baseUrl);

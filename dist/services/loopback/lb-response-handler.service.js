@@ -96,7 +96,7 @@ var LBResponseHandlerService = /** @class */ (function (_super) {
         }
     };
     LBResponseHandlerService = __decorate([
-        (0, tsyringe_1.injectable)()
+        (0, tsyringe_1.singleton)()
     ], LBResponseHandlerService);
     return LBResponseHandlerService;
 }(services_1.BaseResponseHandlerService));

@@ -46,9 +46,6 @@ var tsyringe_1 = require("tsyringe");
 var diContainerSingleton = function () {
     var _a, _b;
     var isInitializedInServerSide = (0, utilities_1.isServerSideRendering)();
-    if (isInitializedInServerSide && (0, utilities_1.isEmpty)(globalThis._traceGlobals)) {
-        return;
-    }
     var baseUrl = ((_a = common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL) !== null && _a !== void 0 ? _a : '') + ((_b = common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH) !== null && _b !== void 0 ? _b : '');
     tsyringe_1.container.register(common_1.BindingKeys.DATA_PROVIDER_IDENTIFIER, {
         useValue: common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER,

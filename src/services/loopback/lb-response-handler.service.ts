@@ -2,14 +2,14 @@
 import { RequestTypes } from '@/common';
 import { BaseResponseHandlerService, type IBaseResponseHandlerService } from '@/services';
 import { getError } from '@/utilities';
-import { container, injectable } from 'tsyringe';
+import { container, singleton } from 'tsyringe';
 
 export interface ILBResponseHandlerService extends IBaseResponseHandlerService {
   handleCreate: <T>(opts: { status: number; data: any | any[]; params: any }) => T;
   handleGetListAndGetManyReference: <T>(opts: { status: number; data: any | any[]; headers: Record<string, any> }) => T;
 }
 
-@injectable()
+@singleton()
 export class LBResponseHandlerService extends BaseResponseHandlerService implements ILBResponseHandlerService {
   handleCreate<T>(opts: { status: number; data: any | any[]; params: any }): T {
     let rs: any = { id: opts.data?.id };

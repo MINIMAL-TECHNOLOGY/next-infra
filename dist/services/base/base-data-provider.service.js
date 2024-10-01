@@ -295,7 +295,7 @@ var BaseDataProviderService = /** @class */ (function () {
         });
     };
     BaseDataProviderService = __decorate([
-        (0, tsyringe_1.injectable)(),
+        (0, tsyringe_1.singleton)(),
         __param(0, (0, tsyringe_1.inject)(common_1.BindingKeys.APPLICATION_SEND_BASE_URL)),
         __metadata("design:paramtypes", [String])
     ], BaseDataProviderService);

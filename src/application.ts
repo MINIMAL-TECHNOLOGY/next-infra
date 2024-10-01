@@ -3,14 +3,11 @@ import '@abraham/reflection';
 import { BindingKeys, NextPublicEnv } from '@/common';
 import { type ApplicationLogger, LoggerFactory } from '@/helpers';
 import { setupContainer } from '@/providers';
-import { isEmpty, isServerSideRendering } from '@/utilities';
+import { isServerSideRendering } from '@/utilities';
 import { container as tsyringeContainer } from 'tsyringe';
 
 const diContainerSingleton = () => {
   const isInitializedInServerSide = isServerSideRendering();
-  if (isInitializedInServerSide && isEmpty(globalThis._traceGlobals)) {
-    return;
-  }
 
   const baseUrl =
     (NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL ?? '') + (NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH ?? '');
