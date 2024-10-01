@@ -2,7 +2,7 @@ import { BindingKeys, RequestTypes, type IParam } from '@/common';
 import { BaseDataProviderService, type IBaseRestRequestService } from '@/services';
 import { getError } from '@/utilities';
 import { omit } from '@/utilities/lodash.utility';
-import { container, inject, singleton } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 
 // -------------------------------------------------------------
 export interface ILBDataProvider extends IBaseRestRequestService {
@@ -381,5 +381,3 @@ export class LBDataProviderService extends BaseDataProviderService implements IL
     } as T;
   }
 }
-
-container.register(LBDataProviderService.name, { useClass: LBDataProviderService });

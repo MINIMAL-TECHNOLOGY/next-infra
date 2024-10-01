@@ -101,5 +101,4 @@ var LBResponseHandlerService = /** @class */ (function (_super) {
     return LBResponseHandlerService;
 }(services_1.BaseResponseHandlerService));
 exports.LBResponseHandlerService = LBResponseHandlerService;
-tsyringe_1.container.register(LBResponseHandlerService.name, { useClass: LBResponseHandlerService });
 //# sourceMappingURL=lb-response-handler.service.js.map

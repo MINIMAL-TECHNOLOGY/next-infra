@@ -433,5 +433,4 @@ var LBDataProviderService = /** @class */ (function (_super) {
     return LBDataProviderService;
 }(services_1.BaseDataProviderService));
 exports.LBDataProviderService = LBDataProviderService;
-tsyringe_1.container.register(LBDataProviderService.name, { useClass: LBDataProviderService });
 //# sourceMappingURL=lb-data-provider.service.js.map

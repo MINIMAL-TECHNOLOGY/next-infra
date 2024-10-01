@@ -2,7 +2,7 @@
 import { RequestTypes } from '@/common';
 import { BaseResponseHandlerService, type IBaseResponseHandlerService } from '@/services';
 import { getError } from '@/utilities';
-import { container, singleton } from 'tsyringe';
+import { singleton } from 'tsyringe';
 
 export interface ILBResponseHandlerService extends IBaseResponseHandlerService {
   handleCreate: <T>(opts: { status: number; data: any | any[]; params: any }) => T;
@@ -79,5 +79,3 @@ export class LBResponseHandlerService extends BaseResponseHandlerService impleme
     }
   }
 }
-
-container.register(LBResponseHandlerService.name, { useClass: LBResponseHandlerService });

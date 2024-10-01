@@ -11,10 +11,10 @@ var setupContainer = function () {
             var currentDataProvider = c.resolve(common_1.BindingKeys.DATA_PROVIDER_IDENTIFIER);
             switch (currentDataProvider) {
                 case common_1.DataProviders.LOOPBACK: {
-                    return c.resolve(services_1.LBResponseHandlerService.name);
+                    return c.resolve(services_1.LBResponseHandlerService);
                 }
                 case common_1.DataProviders.BASE: {
-                    return c.resolve(services_1.BaseResponseHandlerService.name);
+                    return c.resolve(services_1.BaseResponseHandlerService);
                 }
                 default: {
                     throw (0, utilities_1.getError)({ message: 'Invalid data provider' });
@@ -27,10 +27,10 @@ var setupContainer = function () {
             var currentDataProvider = c.resolve(common_1.BindingKeys.DATA_PROVIDER_IDENTIFIER);
             switch (currentDataProvider) {
                 case common_1.DataProviders.LOOPBACK: {
-                    return c.resolve(services_1.LBDataProviderService.name);
+                    return c.resolve(services_1.LBDataProviderService);
                 }
                 case common_1.DataProviders.BASE: {
-                    return c.resolve(services_1.BaseDataProviderService.name);
+                    return c.resolve(services_1.BaseDataProviderService);
                 }
                 default: {
                     throw (0, utilities_1.getError)({ message: 'Invalid data provider' });

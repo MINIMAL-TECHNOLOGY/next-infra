@@ -35,7 +35,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 require("@abraham/reflection");
 var common_1 = require("./common");
@@ -43,36 +42,41 @@ var helpers_1 = require("./helpers");
 var providers_1 = require("./providers");
 var utilities_1 = require("./utilities");
 var tsyringe_1 = require("tsyringe");
-var diContainerSingleton = function () {
-    var _a, _b;
-    var isInitializedInServerSide = (0, utilities_1.isServerSideRendering)();
-    var baseUrl = ((_a = common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL) !== null && _a !== void 0 ? _a : '') + ((_b = common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH) !== null && _b !== void 0 ? _b : '');
-    tsyringe_1.container.register(common_1.BindingKeys.DATA_PROVIDER_IDENTIFIER, {
-        useValue: common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER,
-    });
-    tsyringe_1.container.register(common_1.BindingKeys.APPLICATION_SEND_BASE_URL, {
-        useValue: baseUrl,
-    });
-    var clientInfraContainer = (0, providers_1.setupContainer)();
-    if (isInitializedInServerSide) {
-        void helpers_1.LoggerFactory.getLogger(['next-server']).then(function (applicationLogger) { return __awaiter(void 0, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                applicationLogger.info('------------------------------------');
-                applicationLogger.info(' Application configures:');
-                applicationLogger.info(' - App env: %s | Run mode: %s', process.env.APP_ENV, process.env.RUN_MODE);
-                applicationLogger.info(' - Name: %s', common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME);
-                applicationLogger.info(' - Data Provider: %s', common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER);
-                applicationLogger.info(' - Send base url: %s', baseUrl !== null && baseUrl !== void 0 ? baseUrl : 'N/A');
-                applicationLogger.info('------------------------------------');
-                return [2 /*return*/];
-            });
-        }); });
+var DIContainerSingleton = /** @class */ (function () {
+    function DIContainerSingleton() {
+        var _this = this;
+        var _a, _b;
+        var baseUrl = ((_a = common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL) !== null && _a !== void 0 ? _a : '') +
+            ((_b = common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH) !== null && _b !== void 0 ? _b : '');
+        tsyringe_1.container.register(common_1.BindingKeys.DATA_PROVIDER_IDENTIFIER, {
+            useValue: common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER,
+        });
+        tsyringe_1.container.register(common_1.BindingKeys.APPLICATION_SEND_BASE_URL, {
+            useValue: baseUrl,
+        });
+        this.container = (0, providers_1.setupContainer)();
+        if ((0, utilities_1.isServerSideRendering)()) {
+            void helpers_1.LoggerFactory.getLogger(['next-server']).then(function (applicationLogger) { return __awaiter(_this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    applicationLogger.info('------------------------------------');
+                    applicationLogger.info(' Application configures:');
+                    applicationLogger.info(' - App env: %s | Run mode: %s', process.env.APP_ENV, process.env.RUN_MODE);
+                    applicationLogger.info(' - Name: %s', common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME);
+                    applicationLogger.info(' - Data Provider: %s', common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER);
+                    applicationLogger.info(' - Send base url: %s', baseUrl !== null && baseUrl !== void 0 ? baseUrl : 'N/A');
+                    applicationLogger.info('------------------------------------');
+                    return [2 /*return*/];
+                });
+            }); });
+        }
     }
-    return clientInfraContainer;
-};
-var container = (_a = globalThis.nextInfraContainer) !== null && _a !== void 0 ? _a : diContainerSingleton();
-exports.default = container;
-if (process.env.APP_ENV !== 'production') {
-    globalThis.nextInfraContainer = container;
-}
+    DIContainerSingleton.getInstance = function () {
+        if (!DIContainerSingleton.instance) {
+            DIContainerSingleton.instance = new DIContainerSingleton();
+        }
+        return DIContainerSingleton.instance;
+    };
+    return DIContainerSingleton;
+}());
+exports.default = DIContainerSingleton.getInstance().container;
 //# sourceMappingURL=application.js.map

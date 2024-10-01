@@ -17,10 +17,10 @@ export const setupContainer = () => {
 
       switch (currentDataProvider) {
         case DataProviders.LOOPBACK: {
-          return c.resolve(LBResponseHandlerService.name);
+          return c.resolve(LBResponseHandlerService);
         }
         case DataProviders.BASE: {
-          return c.resolve(BaseResponseHandlerService.name);
+          return c.resolve(BaseResponseHandlerService);
         }
         default: {
           throw getError({ message: 'Invalid data provider' });
@@ -35,10 +35,10 @@ export const setupContainer = () => {
 
       switch (currentDataProvider) {
         case DataProviders.LOOPBACK: {
-          return c.resolve(LBDataProviderService.name);
+          return c.resolve(LBDataProviderService);
         }
         case DataProviders.BASE: {
-          return c.resolve(BaseDataProviderService.name);
+          return c.resolve(BaseDataProviderService);
         }
         default: {
           throw getError({ message: 'Invalid data provider' });

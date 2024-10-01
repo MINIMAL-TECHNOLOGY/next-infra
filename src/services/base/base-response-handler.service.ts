@@ -1,5 +1,5 @@
 import type { RequestTypes } from '@/common';
-import { container, singleton } from 'tsyringe';
+import { singleton } from 'tsyringe';
 
 export interface IBaseResponseHandlerService {
   convertResponse: <T>(opts: {
@@ -20,5 +20,3 @@ export class BaseResponseHandlerService implements IBaseResponseHandlerService {
     return { statusCode: opts.response.status, data: opts.response.data, headers: opts.response.headers } as T;
   }
 }
-
-container.register(BaseResponseHandlerService.name, { useClass: BaseResponseHandlerService });

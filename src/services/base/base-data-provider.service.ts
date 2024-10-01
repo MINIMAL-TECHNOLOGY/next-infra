@@ -255,5 +255,3 @@ export class BaseDataProviderService implements IBaseRestRequestService {
     return response;
   }
 }
-
-container.register(BaseDataProviderService.name, { useClass: BaseDataProviderService });
