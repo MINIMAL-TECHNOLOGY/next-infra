@@ -13,7 +13,7 @@ const diContainerSingleton = () => {
   }
 
   const baseUrl =
-    NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL ?? '' + NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH ?? '';
+    (NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL ?? '') + (NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH ?? '');
 
   tsyringeContainer.register(BindingKeys.DATA_PROVIDER_IDENTIFIER, {
     useValue: NextPublicEnv.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER,
