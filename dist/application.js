@@ -44,28 +44,28 @@ var providers_1 = require("./providers");
 var utilities_1 = require("./utilities");
 var tsyringe_1 = require("tsyringe");
 var diContainerSingleton = function () {
-    var _a;
+    var _a, _b;
     var isInitializedInServerSide = (0, utilities_1.isServerSideRendering)();
-    if (isInitializedInServerSide && globalThis.fetch.constructor.name !== 'AsyncFunction') {
+    if (isInitializedInServerSide && (0, utilities_1.isEmpty)(globalThis._traceGlobals)) {
         return;
     }
+    var baseUrl = (_b = (_a = common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL) !== null && _a !== void 0 ? _a : '' + common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH) !== null && _b !== void 0 ? _b : '';
     tsyringe_1.container.register(common_1.BindingKeys.DATA_PROVIDER_IDENTIFIER, {
         useValue: common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER,
     });
     tsyringe_1.container.register(common_1.BindingKeys.APPLICATION_SEND_BASE_URL, {
-        useValue: (_a = common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL) !== null && _a !== void 0 ? _a : '',
+        useValue: baseUrl,
     });
     var clientInfraContainer = (0, providers_1.setupContainer)();
     if (isInitializedInServerSide) {
         void helpers_1.LoggerFactory.getLogger(['next-server']).then(function (applicationLogger) { return __awaiter(void 0, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
+            return __generator(this, function (_a) {
                 applicationLogger.info('------------------------------------');
                 applicationLogger.info(' Application configures:');
-                applicationLogger.info(' - Env: %s | Run mode: %s', process.env.NODE_ENV, process.env.RUN_MODE);
+                applicationLogger.info(' - App env: %s | Run mode: %s', process.env.APP_ENV, process.env.RUN_MODE);
                 applicationLogger.info(' - Name: %s', common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME);
                 applicationLogger.info(' - Data Provider: %s', common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER);
-                applicationLogger.info(' - Send base url: %s', (_a = common_1.NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL) !== null && _a !== void 0 ? _a : 'N/A');
+                applicationLogger.info(' - Send base url: %s', baseUrl !== null && baseUrl !== void 0 ? baseUrl : 'N/A');
                 applicationLogger.info('------------------------------------');
                 return [2 /*return*/];
             });
@@ -75,7 +75,7 @@ var diContainerSingleton = function () {
 };
 var container = (_a = globalThis.nextInfraContainer) !== null && _a !== void 0 ? _a : diContainerSingleton();
 exports.default = container;
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.APP_ENV !== 'production') {
     globalThis.nextInfraContainer = container;
 }
 //# sourceMappingURL=application.js.map

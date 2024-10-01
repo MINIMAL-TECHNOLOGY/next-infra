@@ -55,7 +55,7 @@ NEXT_PUBLIC_APP_ENV_APPLICATION_NAME=<your_project_name>
 NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER=loopback | base
 NEXT_PUBLIC_APP_ENV_SEND_BASE_URL=<your_base_url>
 
-NODE_ENV=development | production | alpha | beta | staging
+APP_ENV=development | production | alpha | beta | staging
 RUN_MODE=dev | prod
 ```
 

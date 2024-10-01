@@ -10,7 +10,7 @@ export class ApplicationLogger {
   readonly _environment: string | undefined;
 
   constructor() {
-    this._environment = process.env.NODE_ENV;
+    this._environment = process.env.APP_ENV;
   }
 
   private async importWinstonModules() {

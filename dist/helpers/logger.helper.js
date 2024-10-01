@@ -76,7 +76,7 @@ var LOGGER_PREFIX = (_a = process.env.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME) !== 
 var ApplicationLogger = /** @class */ (function () {
     function ApplicationLogger() {
         this.scopes = [];
-        this._environment = process.env.NODE_ENV;
+        this._environment = process.env.APP_ENV;
     }
     ApplicationLogger.prototype.importWinstonModules = function () {
         return __awaiter(this, void 0, void 0, function () {

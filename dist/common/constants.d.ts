@@ -18,6 +18,7 @@ export declare class DataProviders {
 }
 export declare class NextPublicEnv {
     static readonly NEXT_PUBLIC_APP_ENV_SEND_BASE_URL: string | undefined;
+    static readonly NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH: string | undefined;
     static readonly NEXT_PUBLIC_APP_ENV_APPLICATION_NAME: string;
     static readonly NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER: string;
 }

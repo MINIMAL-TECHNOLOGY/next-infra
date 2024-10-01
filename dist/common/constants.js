@@ -37,6 +37,7 @@ var NextPublicEnv = /** @class */ (function () {
     }
     var _b, _c;
     NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL = process.env.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL;
+    NextPublicEnv.NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH = process.env.NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH;
     NextPublicEnv.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME = (_b = process.env.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME) !== null && _b !== void 0 ? _b : 'NextJS Infrastructure';
     NextPublicEnv.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER = (_c = process.env.NEXT_PUBLIC_APP_ENV_DATA_PROVIDER_IDENTIFIER) !== null && _c !== void 0 ? _c : DataProviders.BASE;
     return NextPublicEnv;

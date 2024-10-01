@@ -25,6 +25,7 @@ export class DataProviders {
 
 export class NextPublicEnv {
   static readonly NEXT_PUBLIC_APP_ENV_SEND_BASE_URL = process.env.NEXT_PUBLIC_APP_ENV_SEND_BASE_URL;
+  static readonly NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH = process.env.NEXT_PUBLIC_APP_ENV_SEND_BASE_PATH;
   static readonly NEXT_PUBLIC_APP_ENV_APPLICATION_NAME =
     process.env.NEXT_PUBLIC_APP_ENV_APPLICATION_NAME ?? 'NextJS Infrastructure';
 
